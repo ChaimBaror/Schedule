@@ -1,5 +1,6 @@
 import React from "react";
 import CardList from "./Card-compoemt";
+import { LoopTextComponents } from "./Loop-text-components";
 
 export type Item = {
   title: string;
@@ -62,7 +63,7 @@ const Home = () => {
       times: {},
     },
     {
-      title:`ערבית מוצש"ק `,
+      title: `ערבית מוצש"ק `,
       times: {
         " בחורף": `בזמן צאת שבת`,
         "בקיץ": ` 5 דקות קודם יציאת שבת`,
@@ -94,7 +95,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div className="bg-[#AE8D3E] w-full h-[50px] bottom-0 absolute"></div>
+        <LoopTextComponents />
       </div>
     </div>
   );

@@ -9,8 +9,8 @@ const CardList = (props: Props) => {
   const { items } = props;
   return (
     <div className="grid grid-cols-1">
-      {items.map((item) => (
-        <div className="card px-5 max-w-xl">
+      {items.map((item, i) => (
+        <div key={i} className="card px-5 max-w-xl">
           <div
             style={{ backgroundImage: `url(${"/assets/row.png"})` }}
             className="bg-cover bg-center title py-4 px-10 text-7xl font-bold text-center font-serif"
@@ -19,8 +19,8 @@ const CardList = (props: Props) => {
           </div>
           <div className="text-black text-3xl py-2 font-bold text-center ">
             {item.times &&
-              Object.entries(item.times).map((time) => (
-                <p className="text-5xl ">{time[0] + "  : " + time[1]}</p>
+              Object.entries(item.times).map((time, i) => (
+                <p key={i} className="text-5xl ">{time[0] + "  : " + time[1]}</p>
               ))}
             {item.description && <p className="w-3/4 mx-auto ">{item.description}</p>}
           </div>
