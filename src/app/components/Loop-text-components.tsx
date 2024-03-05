@@ -1,11 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { getEvents } from "../utils/hebcal";
-import { HDate } from "@hebcal/core";
 
 export const LoopTextComponents = () => {
-  const [dataZmaniem, setDataZmaniem] = useState("");
-  const [events, setEvents] = useState([]);
+  const [dataZmaniem, setDataZmaniem] = useState(" &bull; ");
 
   const d = new Date();
 
@@ -14,17 +12,18 @@ export const LoopTextComponents = () => {
   }, []);
 
   const setWeek = () => {
+    setDataZmaniem('')
     let day = d.getDay()
     setZmainem();
 
     for (let index = day; index <= 7; index++) {
-        console.log('day' , day);
-        d.setDate(d.getDate() + 1); // Move to the next day
-        day = d.getDay(); // Update the day variable to reflect the new day of the week
+      console.log('day', d.toLocaleDateString());
+      d.setDate(d.getDate() + 1); // Move to the next day
+      day = d.getDay(); // Update the day variable to reflect the new day of the week
 
-        setZmainem();
+      setZmainem();
     }
- 
+
   }
 
   const setZmainem = () => {
@@ -34,15 +33,33 @@ export const LoopTextComponents = () => {
       const date = hd.greg();
 
       if (date.toLocaleDateString() === d.toLocaleDateString()) {
-        setDataZmaniem((pro) => pro + " &bull; " + ev.render("he"));
+        setDataZmaniem((pro) => pro + ev.render("he") + " &bull; ");
       }
     }
   };
 
-  const text = "this is test looop i need this for my defult project";
   return (
-    <div className="bg-[#AE8D3E] w-full bottom-5 absolute text-red text-3xl text-bold text-black truncate	">
-      <p className=" py-5" dangerouslySetInnerHTML={{ __html: dataZmaniem }} />
+    <div className=" w-full inline-flex flex-nowrap bg-[#AE8D3E] bottom-5 absolute text-3xl text-bold text-black truncate py-3	">
+      <div className="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll"
+        dangerouslySetInnerHTML={{ __html: dataZmaniem }}
+      />
+
+      <div className="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll"
+        aria-hidden="true"
+        dangerouslySetInnerHTML={{ __html: dataZmaniem }}
+      />
+      <div className="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll"
+        aria-hidden="true"
+        dangerouslySetInnerHTML={{ __html: dataZmaniem }}
+      />
+      <div className="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll"
+        aria-hidden="true"
+        dangerouslySetInnerHTML={{ __html: dataZmaniem }}
+      />
+      <div className="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll"
+        aria-hidden="true"
+        dangerouslySetInnerHTML={{ __html: dataZmaniem }}
+      />
     </div>
   );
 };
