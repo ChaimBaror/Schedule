@@ -1,6 +1,9 @@
-import React from "react";
-import CardList from "./Card-compoemt";
+"use client";
+import React, { useEffect } from "react";
 import { LoopTextComponents } from "./Loop-text-components";
+import Column from "./Column-compnent";
+import { getEvents } from "../utils/hebcal";
+import Clock from "./Clock-component";
 
 export type Item = {
   title: string;
@@ -9,6 +12,8 @@ export type Item = {
 };
 
 const Home = () => {
+
+
   const items: Item[] = [
     {
       title: "שחרית יום חול",
@@ -85,13 +90,12 @@ const Home = () => {
         className="w-full h-full bg-cover bg-center text-white"
       >
         <div>
-          <div className="">time for shbat</div>
-          <div className="px-[200px] mt-[350px] mx-auto w-full">
-            {/* <div className="grid grid-rows-4 grid-flow-col gap-4 text-center"> */}
+          <Clock />
+          <div className="px-[200px] mt-[300px] mx-auto w-full">
             <div className="flex flex-wrap justify-around gap-x-10 text-center">
-              <CardList items={items3} />
-              <CardList items={items2} />
-              <CardList items={items} />
+              <Column items={items3} />
+              <Column items={items2} />
+              <Column items={items} />
             </div>
           </div>
         </div>
