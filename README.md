@@ -2,6 +2,10 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+# [Schedule demo](https://schedule-gamma-nine.vercel.app/)
+
+https://github.com/ChaimBaror/Schedule
+
 First, run the development server:
 
 ```bash
