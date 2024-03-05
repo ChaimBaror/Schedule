@@ -10,7 +10,7 @@ const Clock: React.FC = () => {
     setTimeout(displayClock, 1000);
     
     return (
-        <div className='whitespace-nowrap p-1 font-bold text-5xl text-gray-700 text-right left-[50px] p-[50px]'>
+        <div className='whitespace-nowrap p-1 font-bold text-5xl text-gray-700 '>
             {newTime}
         </div>
     );

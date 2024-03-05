@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import { LoopTextComponents } from "./Loop-text-components";
 import Column from "./Column-compnent";
-import { getEvents } from "../utils/hebcal";
+import { ft, getEvents, getZmanim } from "../utils/hebcal";
 import Clock from "./Clock-component";
 
 export type Item = {
@@ -13,11 +13,13 @@ export type Item = {
 
 const Home = () => {
 
-
+ 
   const items: Item[] = [
     {
       title: "שחרית יום חול",
-      times: [' מניין א _______________06:15 ', "מניין ב _______________08:10 ",]
+      times: [' מניין א _______________06:15 ',
+       "מניין ב _______________08:10 "
+      ]
     },
     {
       title: "מנחה יום חול",
@@ -26,20 +28,20 @@ const Home = () => {
     {
       title: "ערבית יום חול",
       description: "עשרים דקות אחרי השקיעה",
-      times: [],
+      times: [`${ft(getZmanim().shkiah(), 20) }`],
     },
   ];
 
   const items2: Item[] = [
     {
       title: "מנחה ערב שבת",
-      description: " דקות לאחר הדלקת נרות 10 ",
+      description: "10 דקות לאחר הדלקת נרות ",
       times: [],
     },
     {
       title: "ערבית ליל שבת",
-      description: "עשרית דקות אחרי השקיעה",
-      times: [],
+      description: " כחצי שעה לאחר השקיעה",
+      times: [`${ft(getZmanim().shkiah(), 30) }`],
     },
     {
       title: "שחרית יום שבת",
@@ -51,13 +53,13 @@ const Home = () => {
   const items3: Item[] = [
     {
       title: "אבות ובנים ",
-      description: "  ",
+      description: "",
       times: [` קיץ : דקות קודם מנחה`, ' חורף : אחר תפילת ערבית של מוצש"ק']
     },
     {
       title: "מנחה שבת",
       description: "10 דקות קודם הדלקת נרות      ",
-      times: [],
+      times: [`${ft(getZmanim().shkiah(), -30) }`],
     },
     {
       title: `ערבית מוצש"ק `,
@@ -79,7 +81,10 @@ const Home = () => {
         className="w-full h-full bg-cover bg-center text-white"
       >
         <div>
-          <Clock />
+          <div className="pb-8 text-right left-[50px] p-[50px]">
+            <Clock />
+            <div className="font-bold text-xl text-gray-700" >שקיעה היום : {ft(getZmanim().shkiah())}</div>
+          </div>
           <div className="px-[200px] mx-auto w-full">
             <div className="flex flex-wrap justify-around gap-x-10 text-center">
               <Column items={items3} />

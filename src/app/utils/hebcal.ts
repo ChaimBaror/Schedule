@@ -40,14 +40,17 @@ export const candleLight = () => {
   return candleLighting;
 }
 
-export const ft = (dateString: string | Date) => {
+export const ft = (dateString: string | Date, minutesToAdd: number = 0) => {
   const date = new Date(dateString);
 
-  const hour = date.getHours();
-  const minute = date.getMinutes();
-  const second = date.getSeconds();
+  // Add minutes
+  date.setMinutes(date.getMinutes() + minutesToAdd);
+
+  const hour = String(date.getHours()).padStart(2, '0');
+  const minute = String(date.getMinutes()).padStart(2, '0');
+  const second = String(date.getSeconds()).padStart(2, '0');
 
   // Format the time as "HH:MM:SS"
-  const timeFormat = hour + ":" + minute + ":" + second;
+  const timeFormat = `${hour}:${minute}`;
   return timeFormat;
 }
