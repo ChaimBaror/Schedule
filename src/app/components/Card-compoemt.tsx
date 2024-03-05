@@ -16,10 +16,9 @@ const Card = (props: Props) => {
         {item.title}
       </div>
       <div className="text-black text-3xl py-5 font-bold text-center ">
-        {item.times &&
-          Object.entries(item.times).map((time, i) => (
-            <p key={i} className="truncate ">
-              {time[0] + "  : " + time[1]}
+        { item.times?.map((time: string) => (
+            <p key={time} className="truncate ">
+              {time}
             </p>
           ))}
         {item.description && (

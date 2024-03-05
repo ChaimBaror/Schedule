@@ -15,6 +15,7 @@ export const LoopTextComponents = () => {
   const addZmanim = () => {
     const z = getZmanim()
     addToList(" חצות : " + ft(z.chatzot()))
+    addToList(" זריחה : " + ft(z.sunrise()))
     addToList(" שקיעה : " + ft(z.shkiah()))
     addToList(" סוף זמן ק''ש : " + ft(z.sofZmanShma()))
     addToList(" מנחה גדולה : " + ft(z.minchaGedola()))
