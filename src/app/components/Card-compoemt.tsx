@@ -8,14 +8,14 @@ type Props = {
 const Card = (props: Props) => {
   const { item } = props;
   return (
-    <div className="card px-5 max-w-xl">
+    <div className="card px-3 max-w-xl">
       <div
         style={{ backgroundImage: `url(${"/assets/row.png"})` }}
-        className="bg-cover bg-center title py-4 px-10 text-7xl font-bold text-center font-serif"
+        className="bg-cover bg-center title py-2 px-10 text-3xl font-bold text-center font-serif"
       >
         {item.title}
       </div>
-      <div className="text-black text-3xl py-5 font-bold text-center ">
+      <div className="text-black text-xl py-5 font-bold text-center ">
         { item.times?.map((time: string) => (
             <p key={time} className="truncate ">
               {time}

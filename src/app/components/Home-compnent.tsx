@@ -17,7 +17,7 @@ const Home = () => {
   const items: Item[] = [
     {
       title: "שחרית יום חול",
-      times: [' מניין א ____________________06:15 ', "מניין ב ____________________08:10 ",]
+      times: [' מניין א _______________06:15 ', "מניין ב _______________08:10 ",]
     },
     {
       title: "מנחה יום חול",
@@ -80,7 +80,7 @@ const Home = () => {
       >
         <div>
           <Clock />
-          <div className="px-[200px] mt-[300px] mx-auto w-full">
+          <div className="px-[200px] mx-auto w-full">
             <div className="flex flex-wrap justify-around gap-x-10 text-center">
               <Column items={items3} />
               <Column items={items2} />
