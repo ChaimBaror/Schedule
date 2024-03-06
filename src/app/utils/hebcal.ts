@@ -1,22 +1,30 @@
-import { HebrewCalendar, HDate, Location, Event, Zmanim, GeoLocation } from '@hebcal/core';
-const d = new HDate();
+import { HebrewCalendar, HDate, Location, Event, Zmanim, GeoLocation, DailyLearning } from '@hebcal/core';
+import '@hebcal/learning';
+
+const dt = new Date();
+const hd = new HDate(dt);
+
+// const ev = DailyLearning.lookup('dafYomi', hd);
+// console.log(dt.toLocaleDateString(), hd.toString(), ev.render('he'));
 
 const options = {
-  year: d.getFullYear(),
-  month: d.getMonth() ,
+  year: hd.getFullYear(),
+  month: hd.getMonth() ,
   latitude: 32.0833,
   longitude: 34.8333,
   isHebrewYear: true,
   candlelighting: true,
   shabbatMevarchim: true,
   dailyLearning: {
-    dafYomi: true,
+    'dafYomi': hd
   },
   location: Location.lookup('Tel Aviv'),
   sedrot: true,
   omer: true,
 };
 const events = HebrewCalendar.calendar(options);
+
+
 
 const latitude = 32.0833;
 const longitude = 34.8333;

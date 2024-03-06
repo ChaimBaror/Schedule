@@ -40,15 +40,15 @@ export const LoopTextComponents = () => {
 
   return (
     <div className=" w-full inline-flex flex-nowrap bg-[#AE8D3E] bottom-5 absolute text-3xl text-bold text-black truncate py-3	">
-      <div className="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll"
+      <div className="flex items-center justify-center animate-infinite-scroll"
         dangerouslySetInnerHTML={{ __html: dataZmaniem }}
       />
 
-      <div className="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll"
+      <div className="flex items-center justify-center animate-infinite-scroll"
         aria-hidden="true"
         dangerouslySetInnerHTML={{ __html: dataZmaniem }}
       />
-      <div className="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll"
+      <div className="flex items-center justify-center animate-infinite-scroll"
         aria-hidden="true"
         dangerouslySetInnerHTML={{ __html: dataZmaniem }}
       />

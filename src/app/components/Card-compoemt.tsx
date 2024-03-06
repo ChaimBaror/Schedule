@@ -15,14 +15,14 @@ const Card = (props: Props) => {
       >
         {item.title}
       </div>
-      <div className="text-black text-xl py-5 font-bold text-center ">
+      <div className="text-black py-5 font-bold text-center ">
         { item.times?.map((time: string) => (
-            <p key={time} className="truncate ">
+            <p key={time} className=" text-2xl ">
               {time}
             </p>
           ))}
         {item.description && (
-          <p className="w-3/4 mx-auto ">{item.description}</p>
+          <p className="w-3/4 mx-auto">{item.description}</p>
         )}
       </div>
     </div>
