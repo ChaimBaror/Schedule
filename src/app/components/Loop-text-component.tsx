@@ -12,7 +12,6 @@ export const LoopTextComponents = () => {
   }, [currentDate.getDay()]);
 
   const addZmanimAndEventsToList = () => {
-    const currentDate = new Date();
     const zmanim = getZmanim();
     const zmanimEntries = [
       { label: "חצות", time: zmanim.chatzot() },
@@ -20,6 +19,7 @@ export const LoopTextComponents = () => {
       { label: "שקיעה", time: zmanim.shkiah() },
       { label: "סוף זמן ק''ש", time: zmanim.sofZmanShma() },
       { label: "מנחה גדולה", time: zmanim.minchaGedola() },
+      { label: "עלות השחר ", time: zmanim.alotHaShachar() },
     ];
     const formattedZmanim = zmanimEntries.map(
       (entry) => `${entry.label}: ${formatTime(entry.time)}`

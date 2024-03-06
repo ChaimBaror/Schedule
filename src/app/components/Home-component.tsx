@@ -17,10 +17,6 @@ export type Item = {
 };
 
 const Home: React.FC = () => {
-
-  const geanertItems = () => {
-  const d =  getZmanim().shkiah()
-  }
   const items: Item[] = [
     {
       title: "שחרית יום חול",
@@ -34,7 +30,7 @@ const Home: React.FC = () => {
     },
     {
       title: "ערבית יום חול",
-      times: [`מניין א ___________  ${gfm(getZmanim().shkiah(), 20)} `,"עשרים דקות אחרי השקיעה", "מניין נוסף ________22:30 "],
+      times: [`מניין א ___________  ${gfm(getZmanim().shkiah(), 20)} `,"כעשרים דקות אחרי השקיעה", "מניין נוסף ________22:30 "],
     },
   ];
 
@@ -42,7 +38,7 @@ const Home: React.FC = () => {
     {
       title: "מנחה ערב שבת",
       times: ["עשר דקות לאחר הדלקת נרות"],
-      description: `${ft(getZmanim().shkiah(), -20)}: הדלקת נרות `,
+      description: `הדלקת נרות : ${ft(getZmanim().shkiah(), -20)}`,
     },
     {
       title: "ערבית ליל שבת",
