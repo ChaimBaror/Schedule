@@ -1,6 +1,6 @@
 import React from "react";
-import { Item } from "./Home-compnent";
-import Card from "./Card-compoemt";
+import Card from "./Card-component";
+import { Item } from "./Home-component";
 
 type Props = {
   items: Item[];

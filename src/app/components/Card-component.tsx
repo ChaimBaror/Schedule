@@ -1,12 +1,11 @@
 import React from "react";
-import { Item } from "./Home-compnent";
+import { Item } from "./Home-component";
 
-type Props = {
+interface Props {
   item: Item;
-};
+}
 
-const Card = (props: Props) => {
-  const { item } = props;
+const Card: React.FC<Props> = ({ item }) => {
   return (
     <div className="card px-3 max-w-xl">
       <div
@@ -16,11 +15,11 @@ const Card = (props: Props) => {
         {item.title}
       </div>
       <div className="text-black py-5 font-bold text-center ">
-        { item.times?.map((time: string) => (
-            <p key={time} className=" text-2xl ">
-              {time}
-            </p>
-          ))}
+        {item.times?.map((time: string) => (
+          <p key={time} className="text-2xl">
+            {time}
+          </p>
+        ))}
         {item.description && (
           <p className="w-3/4 mx-auto">{item.description}</p>
         )}

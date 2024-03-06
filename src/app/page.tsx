@@ -1,4 +1,4 @@
-import Homedash from "./components/Home-compnent";
+import Homedash from "./components/Home-component";
 
 export default function Home() {
   return (
