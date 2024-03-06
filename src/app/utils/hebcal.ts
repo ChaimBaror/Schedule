@@ -4,12 +4,10 @@ import '@hebcal/learning';
 const dt = new Date();
 const hd = new HDate(dt);
 
-// const ev = DailyLearning.lookup('dafYomi', hd);
-// console.log(dt.toLocaleDateString(), hd.toString(), ev.render('he'));
 
 const options = {
   year: hd.getFullYear(),
-  month: hd.getMonth() ,
+  month: hd.getMonth(),
   latitude: 32.0833,
   longitude: 34.8333,
   isHebrewYear: true,
@@ -46,6 +44,12 @@ export const getZmanim = () => {
 
 export const candleLight = () => {
   return candleLighting;
+}
+
+export const getDailyLearningDafYomi = () => {
+  const ev = DailyLearning.lookup('dafYomi', hd);
+  return ev.render('he');
+
 }
 
 export const ft = (dateString: string | Date, minutesToAdd: number = 0) => {
