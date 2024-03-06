@@ -4,11 +4,12 @@ import { formatTime, getEvents, getZmanim } from "../utils/hebcal";
 
 export const LoopTextComponents = () => {
   const [zmanimData, setZmanimData] = useState<string>('');
+  const currentDate = new Date();
 
 
   useEffect(() => {
     addZmanimAndEventsToList();
-  }, []);
+  }, [currentDate.getDay()]);
 
   const addZmanimAndEventsToList = () => {
     const currentDate = new Date();
