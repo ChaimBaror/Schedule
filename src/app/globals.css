@@ -31,3 +31,7 @@ body {
     text-wrap: balance;
   }
 }
+
+.direction-rtl {
+  direction: rtl;
+}

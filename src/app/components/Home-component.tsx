@@ -1,7 +1,11 @@
 "use client";
 import React from "react";
 import Column from "./Column-component";
-import { formatTime as ft, getDailyLearningDafYomi, getZmanim } from "../utils/hebcal";
+import {
+  formatTime as ft,
+  getDailyLearningDafYomi,
+  getZmanim,
+} from "../utils/hebcal";
 import Headers from "./Headers-component";
 import { LoopTextComponents } from "./Loop-text-component";
 
@@ -12,7 +16,6 @@ export type Item = {
 };
 
 const Home: React.FC = () => {
-
   const items: Item[] = [
     {
       title: "שחרית יום חול",
@@ -66,7 +69,7 @@ const Home: React.FC = () => {
     },
     {
       title: "שיעור הדף היומי ",
-      description: `שיעור א : בשעה 5:40 בבוקר    \n שיעור ב : לאחר שחרית מניין ב`,
+      description: `שיעור א : בשעה 5:40 בבוקר  \n שיעור ב : לאחר שחרית מניין ב`,
       times: [`${getDailyLearningDafYomi()}`],
     },
   ];
@@ -75,14 +78,14 @@ const Home: React.FC = () => {
     <div className="w-full h-full">
       <div
         style={{ backgroundImage: `url(${"/assets/dash.png"})` }}
-        className="w-full h-full bg-cover bg-center text-white"
+        className="w-full md:h-full bg-cover bg-center text-white"
       >
         <Headers />
-        <div className="px-[150px] mx-auto w-full">
-          <div className="flex flex-wrap justify-around gap-x-5 text-center">
-            <Column items={items3} />
-            <Column items={items2} />
+        <div className="2xl:px-[150px] mx-auto w-full">
+          <div className="flex flex-wrap justify-around gap-x-5 text-center direction-rtl">
             <Column items={items} />
+            <Column items={items2} />
+            <Column items={items3} />
           </div>
         </div>
         <LoopTextComponents />

@@ -8,12 +8,12 @@ const hebrewDate = new HDate(currentDate);
 // Calendar options
 const calendarOptions = {
   year: hebrewDate.getFullYear(),
-  month: hebrewDate.getMonth(),
   latitude: 32.0833,
   longitude: 34.8333,
   isHebrewYear: true,
   candlelighting: true,
   shabbatMevarchim: true,
+  noSpecialShabbat: true,
   dailyLearning: {
     'dafYomi': hebrewDate
   },
@@ -25,6 +25,7 @@ const calendarOptions = {
 
 // Generate events using HebrewCalendar
 const events = HebrewCalendar.calendar(calendarOptions);
+
 
 // Calculate zmanim
 const latitude = 32.0833;
@@ -43,6 +44,7 @@ export const getZmanim = () => zmanim;
 export const getCandleLightingTime = () => candleLighting;
 
 export const getDailyLearningDafYomi = () => {
+  
   const dafYomiEvent = DailyLearning.lookup('dafYomi', hebrewDate);
   return dafYomiEvent.render('he');
 };
