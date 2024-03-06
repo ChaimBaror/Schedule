@@ -8,7 +8,7 @@ const Headers = () => {
 
  
   return (
-    <div className="header w-full h-[180px]">
+    <div className="header w-full h-[175px]">
       <div className="text-right left-[50px] p-5">
         <Clock />
         <div className="font-bold text-xl text-gray-700">

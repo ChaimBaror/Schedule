@@ -12,10 +12,6 @@ export type Item = {
 };
 
 const Home: React.FC = () => {
-  const generateTimes = (title: string, description: string, offset: number): string[] => {
-    const shkiah = getZmanim().shkiah();
-    return [`${ft(shkiah, offset)}`, description];
-  };
 
   const items: Item[] = [
     {
@@ -25,11 +21,13 @@ const Home: React.FC = () => {
     },
     {
       title: "מנחה יום חול",
-      times: generateTimes("מנחה יום חול", "כרבע שעה לפני השקיעה שיעור בין מנחה לערבית בנושאים שונים", -15),
+      times: [`${ft(getZmanim().shkiah(), -15)}`],
+      description: "כרבע שעה לפני השקיעה שיעור בין מנחה לערבית בנושאים שונים",
     },
     {
       title: "ערבית יום חול",
-      times: generateTimes("ערבית יום חול", "עשרים דקות אחרי השקיעה", 20),
+      description: "עשרים דקות אחרי השקיעה",
+      times: [`${ft(getZmanim().shkiah(), 20)}`],
     },
   ];
 
@@ -42,7 +40,7 @@ const Home: React.FC = () => {
     {
       title: "ערבית ליל שבת",
       description: " כחצי שעה לאחר השקיעה",
-      times: generateTimes("ערבית ליל שבת", "", 30),
+      times: [`${ft(getZmanim().shkiah(), 30)}`],
     },
     {
       title: "שחרית יום שבת",
@@ -60,11 +58,11 @@ const Home: React.FC = () => {
     {
       title: "מנחה שבת",
       description: "עשר דקות קודם הדלקת נרות ",
-      times: generateTimes("מנחה שבת", "", -30),
+      times: [`${ft(getZmanim().shkiah(), -30)}`],
     },
     {
       title: `ערבית מוצש"ק `,
-      description: `בחורף: בזמן צאת שבת "בקיץ:  5 דקות קודם יציאת שבת`,
+      times: ["בחורף: בזמן צאת שבת", "בקיץ:  5 דקות קודם יציאת שבת"],
     },
     {
       title: "שיעור הדף היומי ",
@@ -80,8 +78,8 @@ const Home: React.FC = () => {
         className="w-full h-full bg-cover bg-center text-white"
       >
         <Headers />
-        <div className="px-[200px] mx-auto w-full">
-          <div className="flex flex-wrap justify-around gap-x-10 text-center">
+        <div className="px-[150px] mx-auto w-full">
+          <div className="flex flex-wrap justify-around gap-x-5 text-center">
             <Column items={items3} />
             <Column items={items2} />
             <Column items={items} />
