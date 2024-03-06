@@ -78,7 +78,7 @@ const Home: React.FC = () => {
     <div className="w-full h-full">
       <div
         style={{ backgroundImage: `url(${"/assets/dash.png"})` }}
-        className="w-full md:h-full bg-cover bg-center text-white"
+        className="w-full lg:h-full bg-cover bg-center text-white"
       >
         <Headers />
         <div className="2xl:px-[150px] mx-auto w-full">
