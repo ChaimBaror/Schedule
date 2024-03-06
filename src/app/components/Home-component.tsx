@@ -5,6 +5,7 @@ import {
   formatTime as ft,
   getDailyLearningDafYomi,
   getZmanim,
+  generateFiveMinutes as gfm,
 } from "../utils/hebcal";
 import Headers from "./Headers-component";
 import { LoopTextComponents } from "./Loop-text-component";
@@ -16,6 +17,10 @@ export type Item = {
 };
 
 const Home: React.FC = () => {
+
+  const geanertItems = () => {
+  const d =  getZmanim().shkiah()
+  }
   const items: Item[] = [
     {
       title: "שחרית יום חול",
@@ -24,12 +29,12 @@ const Home: React.FC = () => {
     },
     {
       title: "מנחה יום חול",
-      times: [`${ft(getZmanim().shkiah(), -15)}`],
+      times: [`${gfm(getZmanim().shkiah(), -15)}`],
       description: "כרבע שעה לפני השקיעה שיעור בין מנחה לערבית בנושאים שונים",
     },
     {
       title: "ערבית יום חול",
-      times: [`מניין א ___________  ${ft(getZmanim().shkiah(), 20)} `,"עשרים דקות אחרי השקיעה", "מניין נוסף ________22:30 "],
+      times: [`מניין א ___________  ${gfm(getZmanim().shkiah(), 20)} `,"עשרים דקות אחרי השקיעה", "מניין נוסף ________22:30 "],
     },
   ];
 
