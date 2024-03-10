@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Column from "./Column-component";
+
 import {
   formatTime as ft,
   getDailyLearningDafYomi,
@@ -9,6 +10,7 @@ import {
 } from "../utils/hebcal";
 import Headers from "./Headers-component";
 import { LoopTextComponents } from "./Loop-text-component";
+import BackgrongImage from "./Layouts/BackgrongImage";
 
 export type Item = {
   title: string;
@@ -17,10 +19,9 @@ export type Item = {
 };
 
 const Home: React.FC = () => {
-
   const geanertItems = () => {
-  const d =  getZmanim().shkiah()
-  }
+    const d = getZmanim().shkiah();
+  };
   const items: Item[] = [
     {
       title: "שחרית יום חול",
@@ -34,7 +35,11 @@ const Home: React.FC = () => {
     },
     {
       title: "ערבית יום חול",
-      times: [`מניין א ___________  ${gfm(getZmanim().shkiah(), 20)} `,"עשרים דקות אחרי השקיעה", "מניין נוסף ________22:30 "],
+      times: [
+        `מניין א ___________  ${gfm(getZmanim().shkiah(), 20)} `,
+        "עשרים דקות אחרי השקיעה",
+        "מניין נוסף ________22:30 ",
+      ],
     },
   ];
 
@@ -79,22 +84,17 @@ const Home: React.FC = () => {
   ];
 
   return (
-    <div className="w-full h-full">
-      <div
-        style={{ backgroundImage: `url(${"/assets/dash.png"})` }}
-        className="w-full lg:h-full bg-cover bg-center text-white"
-      >
-        <Headers />
-        <div className="2xl:px-[150px] mx-auto w-full">
-          <div className="flex flex-wrap justify-around gap-x-5 text-center direction-rtl">
-            <Column items={items} />
-            <Column items={items2} />
-            <Column items={items3} />
-          </div>
+    <BackgrongImage>
+      <Headers />
+      <div className="px-[150px] mx-auto w-full direction-rtl text-white">
+        <div className="flex flex-wrap justify-around gap-x-5 text-center">
+          <Column items={items} />
+          <Column items={items2} />
+          <Column items={items3} />
         </div>
-        <LoopTextComponents />
       </div>
-    </div>
+      <LoopTextComponents />
+    </BackgrongImage>
   );
 };
 

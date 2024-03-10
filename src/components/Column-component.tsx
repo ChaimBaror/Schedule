@@ -8,7 +8,7 @@ interface ColumnProps {
 
 const Column: React.FC<ColumnProps> = ({ items }) => {
   return (
-    <div className="grid grid-cols-1 max-w-[300px]">
+    <div className="grid grid-cols-1 max-w-[400px]">
       {items.map((item, index) => (
         <Card item={item} key={index} />
       ))}
