@@ -1,5 +1,5 @@
+import { Item } from "@/types/items";
 import React from "react";
-import { Item } from "./Home-component";
 
 interface Props {
   item: Item;

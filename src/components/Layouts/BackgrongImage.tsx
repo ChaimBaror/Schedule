@@ -7,22 +7,23 @@ export default function BackgrongImage({
   children: React.ReactNode;
 }) {
   return (
-    <main className="w-[1920px] h-[1080px] absolute">
-      <div
-        className="absolute inset-0 z-0 bg-cover bg-center"
-        style={{ zIndex: -1 }}
-      >
-        <div className="flex shrink-0">
-          <Image
-            src={coverImg}
-            alt="Cover Image"
-            className=" lg:h-full bg-cover bg-center"
-            width={1920}
-            height={1080}
-          />
+    <main  className="lg:w-[1920px] lg:h-[1080px] absolute">
+      <span id="Fullscreen-Background" className="">
+        <div 
+          className="absolute inset-0 z-0 bg-cover bg-center"
+          style={{ zIndex: -1 }}
+        >
+          <div className="flex shrink-0">
+            <Image
+              src={coverImg}
+              alt="Cover Image"
+              className="lg:h-full bg-cover bg-center"
+              fill
+            />
+          </div>
         </div>
-      </div>
-      <div className="relative z-10 w-full h-full">{children}</div>
+        <div className="relative z-10 w-full h-full">{children}</div>
+        </span>
     </main>
   );
 }

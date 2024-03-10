@@ -1,6 +1,6 @@
 import React from "react";
 import Clock from "./Clock-component";
-import { getDailyLearningDafYomi, getEvents, getZmanim } from "../utils/hebcal";
+import { getDailyLearningDafYomi, getEvents, getZmanim } from "../services/hebcal.service";
 import Image from "next/image";
 
 const Headers = () => {

@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { formatTime, getEvents, getZmanim } from "../utils/hebcal";
+import { getEvents, getZmanim } from "../services/hebcal.service";
+import { formatTime } from "@/utils/utils";
 
 export const LoopTextComponents = () => {
   const [zmanimData, setZmanimData] = useState<string>('');
