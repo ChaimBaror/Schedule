@@ -4,6 +4,7 @@ import Image from "next/image";
 
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import { signIn } from "next-auth/react";
 
 export const metadata: Metadata = {
   title: " Sign Up to Schedule Gabay",
@@ -12,6 +13,10 @@ export const metadata: Metadata = {
 };
 
 const SignUp: React.FC = () => {
+  const signInWithGoogle = () => {
+    signIn("google");
+
+  }
   return (
     <DefaultLayout>
       {/* <Breadcrumb pageName="Sign Up" /> */}
@@ -166,7 +171,7 @@ const SignUp: React.FC = () => {
               </h2>
 
               <form>
-                <div className="mb-4">
+                {/* <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Name
                   </label>
@@ -199,9 +204,9 @@ const SignUp: React.FC = () => {
                       </svg>
                     </span>
                   </div>
-                </div>
+                </div> */}
 
-                <div className="mb-4">
+                {/* <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Email
                   </label>
@@ -230,9 +235,9 @@ const SignUp: React.FC = () => {
                       </svg>
                     </span>
                   </div>
-                </div>
+                </div> */}
 
-                <div className="mb-4">
+                {/* <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Password
                   </label>
@@ -265,9 +270,9 @@ const SignUp: React.FC = () => {
                       </svg>
                     </span>
                   </div>
-                </div>
+                </div> */}
 
-                <div className="mb-6">
+                {/* <div className="mb-6">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Re-type Password
                   </label>
@@ -300,7 +305,7 @@ const SignUp: React.FC = () => {
                       </svg>
                     </span>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="mb-5">
                   <input
@@ -310,7 +315,7 @@ const SignUp: React.FC = () => {
                   />
                 </div>
 
-                <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
+                <button type="button" onClick={signInWithGoogle} className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
                   <span>
                     <svg
                       width="20"
