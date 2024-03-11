@@ -1,9 +1,10 @@
+import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Homedash from "../components/Home-component";
 
 export default function Home() {
   return (
-    <div className="h-screen w-screen relative">
+    <DefaultLayout>
       <Homedash />
-    </div>
+    </DefaultLayout>
   );
 }
