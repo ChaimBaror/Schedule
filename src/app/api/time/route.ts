@@ -1,5 +1,6 @@
 import { getZmanim, getDailyLearningDafYomi } from "@/services/hebcal.service";
 import { Item } from "@/types/items";
+import { firebase } from "@/firebase";
 import { formatTime as ft, generateFiveMinutes as gfm } from "@/utils/utils";
 import { NextResponse } from "next/server";
 
@@ -66,3 +67,14 @@ const items3: Item[] = [
 export async function GET() {
     return NextResponse.json({ items, items2, items3 });
 }
+
+// export async function GET() {
+//     const Snapshot :FirebaseFirestore.QuerySnapshot = await firebase.collection("times").get();
+//     const items = Snapshot.docs.map(doc => doc.data());
+//     console.log("Snapshot", items);
+    
+//     return NextResponse.json({ Snapshot });
+
+
+
+// }
