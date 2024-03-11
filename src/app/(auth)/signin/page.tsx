@@ -11,8 +11,8 @@ const SignIn: React.FC = () => {
   };
   return (
     <DefaultLayout>
-        <div className="rounded-sm border border-stroke bg-[#CCC] shadow-default dark:border-strokedark dark:bg-boxdark">
-          <div className="flex flex-wrap items-center">
+        <div className="rounded-sm border border-stroke shadow-default dark:border-strokedark dark:bg-boxdark">
+          <div className="flex flex-wrap items-center h-screen">
             <div className="hidden w-full xl:block xl:w-1/2">
               <div className="px-26 py-17.5 text-center">
                 <Link className="mb-5.5 inline-block" href="/"></Link>
@@ -155,7 +155,7 @@ const SignIn: React.FC = () => {
                 </h2>
 
                 <form>
-                  <div className="mb-4">
+                  {/* <div className="mb-4">
                     <label className="mb-2.5 block font-medium text-black dark:text-white">
                       Email
                     </label>
@@ -184,9 +184,9 @@ const SignIn: React.FC = () => {
                         </svg>
                       </span>
                     </div>
-                  </div>
+                  </div> */}
 
-                  <div className="mb-6">
+                  {/* <div className="mb-6">
                     <label className="mb-2.5 block font-medium text-black dark:text-white">
                       Re-type Password
                     </label>
@@ -219,15 +219,15 @@ const SignIn: React.FC = () => {
                         </svg>
                       </span>
                     </div>
-                  </div>
+                  </div> */}
 
-                  <div className="mb-5">
+                  {/* <div className="mb-5">
                     <input
                       type="submit"
                       value="Sign In"
                       className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 transition hover:bg-opacity-90"
                     />
-                  </div>
+                  </div> */}
 
                   <button type="button" onClick={handlesignWithGoogle} className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
                     <span>
