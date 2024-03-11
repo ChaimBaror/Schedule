@@ -7,7 +7,7 @@ export default function BackgrongImage({
   children: React.ReactNode;
 }) {
   return (
-    <main  className="lg:w-[1920px] lg:h-[1080px] absolute">
+    <main  className="lg:w-[1540px] lg:h-[1080px] absolute">
       <span id="Fullscreen-Background" className="">
         <div 
           className="absolute inset-0 z-0 bg-cover bg-center"
