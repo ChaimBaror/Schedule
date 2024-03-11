@@ -28,7 +28,7 @@ const Home: React.FC = () => {
   return (
     <BackgrongImage>
       <Headers />
-      <div className="lg:px-[150px] mx-auto w-full h-full direction-rtl text-white">
+      <div className="lg:px-[150px] mx-auto w-full direction-rtl text-white">
         <div className="flex flex-wrap justify-around gap-x-5 text-center">
           <Column items={itemsColumn} />
           <Column items={itemsColumn2} />
