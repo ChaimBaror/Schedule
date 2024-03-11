@@ -1,6 +1,6 @@
 import { getZmanim, getDailyLearningDafYomi } from "@/services/hebcal.service";
 import { Item } from "@/types/items";
-import { firebase } from "@/firebase";
+// import { firebase } from "@/firebase";
 import { formatTime as ft, generateFiveMinutes as gfm } from "@/utils/utils";
 import { NextResponse } from "next/server";
 
