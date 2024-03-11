@@ -1,17 +1,17 @@
+"use client"
 import React from "react";
 import Link from "next/link";
-import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import { signIn } from "next-auth/react";
 
-export const metadata: Metadata = {
-  title: "Next.js SignIn Page | Sign In",
-  description: "This is Next.js Signin Page TailAdmin Dashboard Template",
-};
 
 const SignIn: React.FC = () => {
+  const handlesignWithGoogle = () => {
+    signIn("google");
+  };
   return (
     <DefaultLayout>
-        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+        <div className="rounded-sm border border-stroke bg-[#CCC] shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="flex flex-wrap items-center">
             <div className="hidden w-full xl:block xl:w-1/2">
               <div className="px-26 py-17.5 text-center">
@@ -229,7 +229,7 @@ const SignIn: React.FC = () => {
                     />
                   </div>
 
-                  <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
+                  <button type="button" onClick={handlesignWithGoogle} className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
                     <span>
                       <svg
                         width="20"

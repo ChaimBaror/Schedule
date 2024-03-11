@@ -16,7 +16,7 @@ const SignUp: React.FC = () => {
     <DefaultLayout>
       {/* <Breadcrumb pageName="Sign Up" /> */}
 
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-greydark">
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="px-26 py-17.5 text-center">
@@ -339,7 +339,7 @@ const SignUp: React.FC = () => {
                       </g>
                       <defs>
                         <clipPath id="clip0_191_13499">
-                          <rect width="20" height="20" fill="white" />
+                          <rect width="20" height="20"  />
                         </clipPath>
                       </defs>
                     </svg>

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { HeaderFullscreen } from "../RequireFullscreen/HeaderFullscreen";
-import Clock from "../Clock-component";
+import AppHeaderUser from "../AppHeaderUser";
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
@@ -100,7 +100,7 @@ const Header = (props: {
         </div>
 
         <div className="flex items-center gap-3 2xsm:gap-7">
-          <Clock />
+          <AppHeaderUser />
         </div>
       </div>
     </header>

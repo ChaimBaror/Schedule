@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import { RequireFullscreen } from './RequireFullscreen';
-import Fullscreen from '../Home-component';
 
 export const HeaderFullscreen: React.FC = () => {
   const rootRef = useRef<HTMLElement | null>(null);
@@ -14,7 +13,7 @@ export const HeaderFullscreen: React.FC = () => {
       {(isFullscreen) => (
         <div>
           <button >
-            <span className="button button--primary button--round button--lg ">fullscreen</span>
+            <span className="bg-gray-500 text-white font-medium py-1 px-2 rounded">full-screen</span>
           </button>
         </div>
       )}
