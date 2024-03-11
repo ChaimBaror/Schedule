@@ -1,23 +1,6 @@
-import nextAuth, { AuthOptions } from "next-auth";
-import ProvidersGoogle from "next-auth/providers/google";
+import { authOptions } from "@/utils/authOptions";
+import nextAuth from "next-auth";
 
-
-export const authOptions: AuthOptions = {
-    providers: [
-        ProvidersGoogle({
-            clientId: process.env.GOOGLE_CLIENT_ID as string,
-            clientSecret: process.env.GOOGLE_SECRET as string,
-        }),
-    ],
-    session: {
-        strategy: "jwt",
-    },
-    secret: process.env.NEXTAUTH_SECRET!,
-    pages: {
-        signIn: "/signin",
-    }
-
-}
 const hendler = nextAuth(authOptions);
 
 export { hendler as GET, hendler as POST };
