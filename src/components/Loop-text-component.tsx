@@ -34,7 +34,7 @@ export const LoopTextComponents = () => {
     const formattedEvents = todayEvents.map((ev) => ev.render("he"));
 
     setZmanimData(
-      (pro) => pro + [...formattedZmanim, ...formattedEvents].join("  &bull; ") + " &bull; "
+      (pro) => pro + [...formattedZmanim, ...formattedEvents].join(" ⏱️ ") + " ⏱️ "
     );
   };
 
