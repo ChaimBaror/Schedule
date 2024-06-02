@@ -1,7 +1,10 @@
 import React from "react";
 import { formatTime as ft, generateFiveMinutes as gfm } from "@/utils/utils";
-import { getDailyLearningDafYomi, getZmanim } from "@/services/hebcal.service";
-
+import {
+  getCandleLightingTime,
+  getDailyLearningDafYomi,
+  getZmanim,
+} from "@/services/hebcal.service";
 
 interface Props {
   item: Item;
@@ -17,6 +20,9 @@ const Card: React.FC<Props> = ({ item }) => {
           break;
         case "getDailyLearningDafYomi":
           calculatedTime = getDailyLearningDafYomi();
+          break;
+        case "CandleLightingTime":
+          calculatedTime = gfm(getCandleLightingTime(), time.nimus ?? 0);
           break;
         default:
           calculatedTime = time.val;
@@ -36,14 +42,19 @@ const Card: React.FC<Props> = ({ item }) => {
       </div>
       <div className="text-black py-5 font-bold text-center px-8">
         {item.times?.map((time, index) => (
-          <div key={index} className="flex items-center justify-center w-full mb-2">
+          <div
+            key={index}
+            className="flex items-center justify-center w-full mb-2"
+          >
             {time.name && (
               <>
                 <span className="whitespace-nowrap">{time.name}</span>
                 <span className="flex-grow border-t border-black mx-2"></span>
               </>
             )}
-            <span className="whitespace-nowrap">{calculateDynamicTime(time)}</span>
+            <span className="whitespace-nowrap">
+              {calculateDynamicTime(time)}
+            </span>
           </div>
         ))}
         {item.description && (

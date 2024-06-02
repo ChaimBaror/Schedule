@@ -31,10 +31,21 @@ const events = HebrewCalendar.calendar(calendarOptions);
 const latitude = 32.0833;
 const longitude = 34.8333;
 const tzid = 'Asia/Jerusalem';
-const friday = new Date();
+const today = new Date();
 const geoLocation = new GeoLocation(null, latitude, longitude, 0, tzid);
-const zmanim = new Zmanim(geoLocation, friday, false);
-const candleLighting = zmanim.sunsetOffset(-20, true);
+const zmanim = new Zmanim(geoLocation, today, false);
+
+const getNextFriday = () => {
+  const dayOfWeek = today.getDay();
+  const daysUntilFriday = (5 - dayOfWeek + 7) % 7; // 5 is the index of Friday
+  const nextFriday = new Date(today);
+  nextFriday.setDate(today.getDate() + daysUntilFriday);
+  return nextFriday;
+};
+const fridayDate = getNextFriday();
+const zmanimFriday =  new Zmanim(geoLocation, fridayDate, false);
+const candleLighting = zmanimFriday.sunsetOffset(-20, true);
+
 
 // Functions to export
 export const getEvents = () => events;
