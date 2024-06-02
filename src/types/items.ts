@@ -1,6 +1,12 @@
-export type Item = {
-    title: string;
-    description?: string;
-    times?: string[];
-  };
-  
+interface Time {
+  val: string;
+  dynamic?: boolean;
+  zman?: string;
+  nimus?: number;
+}
+
+interface Item {
+  title: string;
+  times: Time[];
+  description?: string;
+}
