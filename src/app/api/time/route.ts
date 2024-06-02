@@ -25,7 +25,7 @@ const items2: Item[] = [
     {
         title: "מנחה ערב שבת",
         times: [{ val: "עשר דקות לאחר הדלקת נרות" } ,
-            {  val: `הדלקת נרות `, dynamic: true, zman: "CandleLightingTime", nimus: -2 },
+            {  val: ` הדלקת נרות 🕯️🕯️`, dynamic: true, zman: "CandleLightingTime", nimus: -2 },
         ],
         // description: `${ft(getZmanim().shkiah(), -20)}: הדלקת נרות`,
     },
@@ -60,7 +60,7 @@ const items3: Item[] = [
     },
     {
         title: "שיעור הדף היומי",
-        description: `שיעור א: בשעה 5:40 בבוקר\nשיעור ב: לאחר שחרית מניין ב`,
+        description: `שיעור א: בשעה 5:40 בבוקר\n\nשיעור ב: לאחר שחרית מניין ב`,
         times: [{ val: ``, dynamic: true, zman: "getDailyLearningDafYomi"}],
     },
 ];
