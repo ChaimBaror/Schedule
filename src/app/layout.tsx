@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "../css/globals.css";
+import "./globals.css";
 import SessionProvider from '@/components/SessionProider';
 import { getServerSession } from 'next-auth';
 import { authOptions } from "@/utils/authOptions";
@@ -20,7 +20,7 @@ export default async function RootLayout({
   const session = await getServerSession(authOptions);
 
   return (
-    <html lang="en">
+    <html lang="he">
       <SessionProvider session={session}>
         <body className={inter.className}>{children}</body>
       </SessionProvider>
