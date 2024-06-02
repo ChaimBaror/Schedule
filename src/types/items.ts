@@ -3,6 +3,7 @@ interface Time {
   dynamic?: boolean;
   zman?: string;
   nimus?: number;
+  name?: string;
 }
 
 interface Item {

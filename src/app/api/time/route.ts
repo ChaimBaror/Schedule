@@ -1,11 +1,10 @@
-import { Item } from "@/types/items";
 import { NextResponse } from "next/server";
 
 const items: Item[] = [
     {
         title: "שחרית יום חול",
-        times: [{ val: "מניין א ___________*06:15" }, { val: "מניין ב ___________08:10" }],
-        description: "*בראש חודש ובתענית ציבור נא לעקוב אחרי המודעות",
+        times: [{ val: " *06:15"  , name: "שחרית א" }, {name: "שחרית ב", val: "08:10 " }],
+        description: "*בראש חודש ובתענית ציבור נא לעקוב אחרי המודעות", 
     },
     {
         title: "מנחה יום חול",
@@ -15,9 +14,9 @@ const items: Item[] = [
     {
         title: "ערבית יום חול",
         times: [
-            { val: `מניין א`, dynamic: true, zman: "shkiah", nimus: 20 },
+            {val:"",  name: `ערבית א`, dynamic: true, zman: "shkiah", nimus: 20 },
             { val: "עשרים דקות אחרי השקיעה" },
-            { val: "מניין נוסף ________22:30" },
+            { name: `ערבית ב`, val: " 22:30 " },
         ],
     },
 ];
@@ -54,7 +53,8 @@ const items3: Item[] = [
     },
     {
         title: `ערבית מוצש"ק`,
-        times: [{ val: "בחורף: בזמן צאת שבת" }, { val: "בקיץ: 5 דקות קודם יציאת שבת" }],
+        times: [{ val: ``, dynamic: true, zman: "shkiah", nimus: 40 }],
+        description: "בזמן צאת שבת",
     },
     {
         title: "שיעור הדף היומי",

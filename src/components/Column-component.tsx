@@ -1,6 +1,5 @@
 import React, { Suspense } from "react";
 import Card from "./Card-component";
-import { Item } from "@/types/items";
 
 interface ColumnProps {
   items: Item[];
