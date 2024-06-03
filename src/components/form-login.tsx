@@ -12,8 +12,8 @@ import { Button } from "./Button";
 export default function LoginForm() {
   const errorMessage = "Invalid email or password";
 
-  const authenticate = (e: any) => {
-    console.log("authenticate", e);
+  const authenticate = (e: FormData) => {
+    console.log("authenticate", e.forEach((value) => console.log(value)));
   };
 
   return (
