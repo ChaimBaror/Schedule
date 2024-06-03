@@ -5,20 +5,7 @@ import {
   getDailyLearningDafYomi,
   getZmanim,
 } from "@/services/hebcal.service";
-
-interface Time {
-  name?: string;
-  val?: string;
-  dynamic?: boolean;
-  zman?: string;
-  nimus?: number;
-}
-
-interface Item {
-  title: string;
-  times?: Time[];
-  description?: string;
-}
+import EditCard from "./EditCard";
 
 interface Props {
   item: Item;
@@ -26,20 +13,22 @@ interface Props {
 
 const Card: React.FC<Props> = ({ item }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [formData, setFormData] = useState(item);
+  const [formData, setFormData] = useState<Item>(item);
 
   const calculateDynamicTime = (time: Time) => {
     if (time.dynamic) {
-      let calculatedTime = "";
+      let calculatedTime: string | undefined = "";
       switch (time.zman) {
         case "shkiah":
-          calculatedTime = gfm(getZmanim().shkiah(), time.nimus ?? 0);
+          calculatedTime = time.rond5minet
+            ? gfm(getZmanim().shkiah(), time.nimus || "0")
+            : ft(getZmanim().shkiah(), time.nimus || "0");
           break;
         case "getDailyLearningDafYomi":
           calculatedTime = getDailyLearningDafYomi();
           break;
         case "CandleLightingTime":
-          calculatedTime = gfm(getCandleLightingTime(), time.nimus ?? 0);
+          calculatedTime = ft(getCandleLightingTime(), time.nimus || "0");
           break;
         default:
           calculatedTime = time.val;
@@ -55,10 +44,13 @@ const Card: React.FC<Props> = ({ item }) => {
 
   const handleClosePopup = () => {
     setIsPopupOpen(false);
+    setFormData;
   };
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
     index?: number,
     field?: string
   ) => {
@@ -76,6 +68,29 @@ const Card: React.FC<Props> = ({ item }) => {
     e.preventDefault();
     // Implement the logic to update the item with the new data in formData
     setIsPopupOpen(false);
+  };
+
+  const handleAddTime = () => {
+    setFormData({
+      ...formData,
+      times: [
+        ...formData.times,
+        {
+          val: "00:00 ",
+          dynamic: false,
+          zman: "שקיעה",
+          nimus: "0",
+          name: "חדש ",
+        },
+      ],
+    });
+  };
+  const handleChangeIndex = (updatedTimes: Time[]) => {
+    setFormData({ ...formData, times: updatedTimes });
+  };
+  const handleDeleteTime = (index: number) => {
+    const updatedTimes = formData.times.filter((_, i) => i !== index);
+    setFormData({ ...formData, times: updatedTimes });
   };
 
   return (
@@ -130,73 +145,15 @@ const Card: React.FC<Props> = ({ item }) => {
       </button>
 
       {isPopupOpen && (
-        <div className="z-50 fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-8 rounded shadow-lg">
-            <h2 className="text-2xl mb-4">Edit Card</h2>
-            <form onSubmit={handleFormSubmit}>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
-                  Title
-                </label>
-                <input
-                  type="text"
-                  name="title"
-                  value={formData.title}
-                  onChange={handleInputChange}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                />
-              </div>
-              {formData.times?.map((time, index) => (
-                <div key={index} className="mb-4">
-                  <label className="block text-gray-700 text-sm font-bold mb-2">
-                    Time {index + 1} Name
-                  </label>
-                  <input
-                    type="text"
-                    value={time.name}
-                    onChange={(e) => handleInputChange(e, index, "name")}
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  />
-                  <label className="block text-gray-700 text-sm font-bold mb-2 mt-2">
-                    Time {index + 1} Value
-                  </label>
-                  <input
-                    type="text"
-                    value={time.val}
-                    onChange={(e) => handleInputChange(e, index, "val")}
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  />
-                </div>
-              ))}
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
-                  Description
-                </label>
-                <textarea
-                  name="description"
-                  value={formData.description}
-                  onChange={handleInputChange}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                />
-              </div>
-              <div className="flex items-center justify-between">
-                <button
-                  type="submit"
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                >
-                  Save
-                </button>
-                <button
-                  type="button"
-                  onClick={handleClosePopup}
-                  className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+        <EditCard
+          handleClosePopup={handleClosePopup}
+          handleChangeIndex={handleChangeIndex}
+          handleAddTime={handleAddTime}
+          formData={formData}
+          handleDeleteTime={handleDeleteTime}
+          handleInputChange={handleInputChange}
+          handleFormSubmit={handleFormSubmit}
+        />
       )}
     </div>
   );

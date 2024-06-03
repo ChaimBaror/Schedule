@@ -2,8 +2,9 @@ interface Time {
   val: string;
   dynamic?: boolean;
   zman?: string;
-  nimus?: number;
+  nimus?: string ;
   name?: string;
+  rond5minet?: boolean;
 }
 
 interface Item {
