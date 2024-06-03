@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, ReactNode } from "react";
+import React, { useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 
@@ -9,29 +9,30 @@ export default function DefaultLayout({
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+
   return (
     <>
-      {/* <!-- ===== Page Wrapper Start ===== --> */}
-      <div className="flex overflow-hidden direction-rtl">
-        {/* <!-- ===== Sidebar Start ===== --> */}
-        {/* <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} /> */}
-        {/* <!-- ===== Sidebar End ===== --> */}
+      {/* Page Wrapper Start */}
+      <div className="flex overflow-hidden">
+        {/* Sidebar Start */}
+        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+        {/* Sidebar End */}
 
-        {/* <!-- ===== Content Area Start ===== --> */}
+        {/* Content Area Start */}
         <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden h-screen">
-          {/* <!-- ===== Header Start ===== --> */}
+          {/* Header Start */}
           <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-          {/* <!-- ===== Header End ===== --> */}
+          {/* Header End */}
 
-          {/* <!-- ===== Main Content Start ===== --> */}
-          <main>
-              {children}
+          {/* Main Content Start */}
+          <main className="p-4">
+            {children}
           </main>
-          {/* <!-- ===== Main Content End ===== --> */}
+          {/* Main Content End */}
         </div>
-        {/* <!-- ===== Content Area End ===== --> */}
+        {/* Content Area End */}
       </div>
-      {/* <!-- ===== Page Wrapper End ===== --> */}
+      {/* Page Wrapper End */}
     </>
   );
 }
