@@ -8,13 +8,13 @@ const items: Item[] = [
     },
     {
         title: "מנחה יום חול",
-        times: [{ val: ``, dynamic: true, zman: "shkiah", nimus: -15 }],
+        times: [{ val: ``, dynamic: true, zman: "shkiah", nimus: '-15', rond5minet: true }],
         description: "כרבע שעה לפני השקיעה שיעור בין מנחה לערבית בנושאים שונים",
     },
     {
         title: "ערבית יום חול",
         times: [
-            {val:"",  name: `ערבית א`, dynamic: true, zman: "shkiah", nimus: 20 },
+            {val:"",  name: `ערבית א`, dynamic: true, zman: "shkiah", nimus:'20' , rond5minet: true},
             { val: "עשרים דקות אחרי השקיעה" },
             { name: `ערבית ב`, val: " 22:30 " },
         ],
@@ -25,14 +25,14 @@ const items2: Item[] = [
     {
         title: "מנחה ערב שבת",
         times: [{ val: "עשר דקות לאחר הדלקת נרות" } ,
-            {  val: ` הדלקת נרות 🕯️🕯️`, dynamic: true, zman: "CandleLightingTime", nimus: -2 },
+            {  val: ` הדלקת נרות 🕯️🕯️`, dynamic: true, zman: "CandleLightingTime", nimus: '-2' },
         ],
         // description: `${ft(getZmanim().shkiah(), -20)}: הדלקת נרות`,
     },
     {
         title: "ערבית ליל שבת",
         description: "כחצי שעה לאחר השקיעה",
-        times: [{ val: ``, dynamic: true, zman: "CandleLightingTime", nimus: 50 },
+        times: [{ val: ``, dynamic: true, zman: "CandleLightingTime", nimus: '50' },
     ],
     },
     {
@@ -51,11 +51,11 @@ const items3: Item[] = [
     {
         title: "מנחה שבת",
         description: "עשר דקות קודם הדלקת נרות",
-        times: [{ val: ``, dynamic: true, zman: "CandleLightingTime", nimus: -10 },],
+        times: [{ val: ``, dynamic: true, zman: "CandleLightingTime", nimus: '-10' },],
     },
     {
         title: `ערבית מוצש"ק`,
-        times: [{ val: ``, dynamic: true, zman: "CandleLightingTime", nimus: 60 }],
+        times: [{ val: ``, dynamic: true, zman: "CandleLightingTime", nimus: '60' }],
         description: "בזמן צאת שבת",
     },
     {

@@ -39,7 +39,7 @@ export const LoopTextComponents = () => {
   };
 
   return (
-    <div className=" w-full inline-flex flex-nowrap bg-[#AE8D3E] lg:bottom-5 absolute  text-3xl text-bold text-black truncate py-3	">
+    <div className="direction-rtl w-full inline-flex flex-nowrap bg-[#AE8D3E] lg:bottom-5 absolute  text-3xl text-bold text-black truncate py-3	">
       <div
         className="flex items-center justify-center animate-infinite-scroll"
         dangerouslySetInnerHTML={{ __html: zmanimData }}
