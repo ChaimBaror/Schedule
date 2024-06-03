@@ -75,10 +75,10 @@ const EditCard: React.FC<Props> = ({
           </div>
 
           {formData.times?.map((time, index) => (
-            <div key={index} className="mb-6">
+            <div key={index} className="mb-6 bg-g p-8 rounded-lg shadow-2xl">
               <div className="flex justify-between items-center">
                 <label className="block text-gray-700 text-sm font-bold">
-                  Time {index + 1}
+                  {time.name || time.val || "Time" + " " + (index + 1)}
                 </label>
                 <div>
                   <button
