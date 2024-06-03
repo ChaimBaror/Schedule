@@ -1,7 +1,7 @@
-export const generateFiveMinutes = (dateString: string | Date, minutesToAdd: number = 0) => {
+export const generateFiveMinutes = (dateString: string | Date, minutesToAdd: string = '0') => {
     const date = new Date(dateString);
     // Add minutes
-    date.setMinutes(date.getMinutes() + minutesToAdd);
+    date.setMinutes(date.getMinutes() + parseInt(minutesToAdd));
   
     // Round minutes to the nearest multiple of 5
     const roundedMinutes = Math.ceil(date.getMinutes() / 5) * 5;
@@ -13,10 +13,10 @@ export const generateFiveMinutes = (dateString: string | Date, minutesToAdd: num
     return `${hour}:${minute}`;
   };
 
-  export const formatTime = (dateString: string | Date, minutesToAdd: number = 0) => {
+  export const formatTime = (dateString: string | Date, minutesToAdd: string = '0') => {
     const date = new Date(dateString);
     // Add minutes
-    date.setMinutes(date.getMinutes() + minutesToAdd);
+    date.setMinutes(date.getMinutes() + parseInt(minutesToAdd));
   
     // Format the time as "HH:MM"
     const hour = String(date.getHours()).padStart(2, '0');
