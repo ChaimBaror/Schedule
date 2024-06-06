@@ -102,7 +102,7 @@ const Card: React.FC<Props> = ({ item }) => {
   return (
     <div className="relative card px-3 max-w-xl text-2xl group">
       <div
-        className="bg-cover bg-center py-1 px-8 text-5xl font-bold text-center font-serif"
+        className="bg-cover bg-center py-1 px-2 text-5xl font-bold text-center font-serif"
         style={{ backgroundImage: `url("/assets/row.png")` }}
       >
         {formData.title}
