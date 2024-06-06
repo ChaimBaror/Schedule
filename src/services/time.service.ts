@@ -1,41 +1,48 @@
-
 export async function getTimeList() {
-    try {
-      const res = await fetch(`/api/items/`);
-      const { items, items2, items3 } = await res.json();
-      console.log(items, items2, items3);
-      
-      return { ColumnL: items, ColumnM: items2, ColumnR: items3 };
-      // const {left, right, medium } = await res.json();
-      // console.log(left, right, medium);
-      
-      // return { ColumnL: left, ColumnM: right, ColumnR: medium };
-    } catch (error) {
-      console.error('Error fetching time list:', error);
-      return { ColumnL: [], ColumnM: [], ColumnR: [] };
-    }
+  try {
+    const res = await fetch(`/api/items/`);
+    const { Right, Medium, Left } = await res.json();
+    console.log(Right, Medium, Left);
+
+    return { Right, Medium, Left };
+  } catch (error) {
+    console.error('Error fetching time list:', error);
+    return { ColumnL: [], ColumnM: [], ColumnR: [] };
   }
-  
-  export async function posItems(item) {
-    console.log("items ", item);
-    
-    try {
-      const res = await fetch(`/api/items`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(item) // Pass item data in the request body
-      });
-  
-      if (!res.ok) {
-        throw new Error('Failed to post items');
-      }
-  
-      return await res.json();
-    } catch (error) {
-      console.error('Error posting items:', error);
-      return { success: false };
+}
+
+export const dataFetch = async () => {
+  try {
+    const response = await fetch('http://localhost:8000/api/item/');
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
     }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
   }
-  
+};
+
+export const postItems = async (itemData: Item) => {
+  console.log("postItems", itemData);
+
+  try {
+    const response = await fetch(`http://localhost:8000/api/item/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(itemData), // Include the item data in the request body
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const result = await response.json();
+    console.log("Item posted successfully:", result);
+  } catch (error) {
+    console.error("Error posting items:", error);
+  }
+};

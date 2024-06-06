@@ -8,7 +8,9 @@ interface Time {
 }
 
 interface Item {
+  uid?: string | number;
   title: string;
   times: Time[];
   description?: string;
+  col?: string;
 }
