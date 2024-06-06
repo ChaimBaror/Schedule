@@ -1,3 +1,11 @@
+
+const beatUrl = process.env.NEXT_PUBLIC_BASE_API || "https://api-express-schedule.vercel.app/"
+console.log("beatUrl", beatUrl);
+console.log("process.env.BASE_API", process.env.NEXT_PUBLIC_BASE_API);
+
+
+const url = `${beatUrl}api/item/`
+
 export async function getTimeList() {
   try {
     const res = await fetch(`/api/items/`);
@@ -13,7 +21,7 @@ export async function getTimeList() {
 
 export const dataFetch = async () => {
   try {
-    const response = await fetch('http://localhost:8000/api/item/');
+    const response = await fetch(`${url}`);
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
@@ -28,7 +36,7 @@ export const postItems = async (itemData: Item) => {
   console.log("postItems", itemData);
 
   try {
-    const response = await fetch(`http://localhost:8000/api/item/`, {
+    const response = await fetch(`${url}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

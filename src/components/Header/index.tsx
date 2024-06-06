@@ -19,18 +19,10 @@ const Header = (props: {
               props.setSidebarOpen(!props.sidebarOpen);
             }}
             className="z-99999 block rounded-sm border border-stroke bg-black p-1.5 shadow-sm dark:border-strokedark dark:bg-boxdark lg:hidden"
-          >
-
-         
-          </button>
+          ></button>
 
           <Link className="block flex-shrink-0 " href="/">
-            <Image
-              width={32}
-              height={32}
-              src={"/assets/logo.png"}
-              alt="Logo"
-            />
+            <Image width={32} height={32} src={"/assets/logo.png"} alt="Logo" />
           </Link>
         </div>
 

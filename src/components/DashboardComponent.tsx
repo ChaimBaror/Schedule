@@ -6,7 +6,7 @@ import { LoopTextComponents } from "./Loop-text-component";
 import BackgrongImage from "./Layouts/BackgrongImage";
 import { dataFetch, getTimeList } from "@/services/time.service";
 
-const Home: React.FC = () => {
+const Dashboard: React.FC = () => {
   const [itemsColumnL, setItemsL] = useState([]);
   const [itemsColumnM, setItemsM] = useState([]);
   const [itemsColumnR, setItemsR] = useState([]);
@@ -63,4 +63,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default Dashboard;

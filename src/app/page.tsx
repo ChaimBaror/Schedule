@@ -1,10 +1,10 @@
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import Homedash from "../components/Home-component";
+import Dashboard from "../components/DashboardComponent";
 
 export default function Home() {
   return (
     <DefaultLayout>
-      <Homedash />
+      <Dashboard />
     </DefaultLayout>
   );
 }
