@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
 
 
-const beatUrl = process.env.NEXT_PUBLIC_BASE_API || "http://localhost:8000"
+const beatUrl = process.env.NEXT_PUBLIC_BASE_API || "https://api-express-schedule.vercel.app"
 const url = `${beatUrl}/api/item/`
 
 export async function GET() {
