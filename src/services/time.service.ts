@@ -2,26 +2,20 @@
 const beatUrl = process.env.NEXT_PUBLIC_BASE_API || "https://api-express-schedule.vercel.app/"
 console.log("beatUrl", beatUrl);
 console.log("process.env.BASE_API", process.env.NEXT_PUBLIC_BASE_API);
+import { Right, Medium, Left } from "@/services/data";
 
 
 const url = `${beatUrl}api/item/`
 
-export async function getTimeList() {
-  try {
-    const res = await fetch(`/api/items/`);
-    const { Right, Medium, Left } = await res.json();
-    console.log(Right, Medium, Left);
-
-    return { Right, Medium, Left };
-  } catch (error) {
-    console.error('Error fetching time list:', error);
-    return { ColumnL: [], ColumnM: [], ColumnR: [] };
-  }
+export function getTimeList() {
+  return { Right, Medium, Left };
 }
+
 
 export const dataFetch = async () => {
   try {
-    const response = await fetch(`${url}`);
+
+    const response = await fetch(`/api/items/`);
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }

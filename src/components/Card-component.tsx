@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { formatTime as ft, generateFiveMinutes as gfm } from "@/utils/utils";
 import {
   getCandleLightingTime,
@@ -14,6 +14,12 @@ interface Props {
 const Card: React.FC<Props> = ({ item }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [formData, setFormData] = useState<Item>(item);
+
+  useEffect(() => {
+    setFormData(item);
+  }, [item]);
+  
+  
 
   const calculateDynamicTime = (time: Time) => {
     if (time.dynamic) {

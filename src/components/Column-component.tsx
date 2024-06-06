@@ -8,7 +8,7 @@ interface ColumnProps {
 const Column: React.FC<ColumnProps> = ({ items }) => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-    <div className="grid grid-cols-1 max-w-[400px]">
+    <div className="grid grid-cols-1  max-w-[400px] lg:max-w-[28%] ">
       {items?.map((item, index) => (
         <Card item={item} key={index} />
       ))}
