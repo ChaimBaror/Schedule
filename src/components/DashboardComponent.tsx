@@ -31,9 +31,9 @@ const Dashboard: React.FC = () => {
       <Headers key="header" fetchData={fetchData}  />
       <div className="lg:px-[150px] mx-auto w-full direction-rtl text-white">
         <div className="flex flex-wrap justify-around gap-x-5 text-center">
-          <Column key="1" items={itemsColumnR} />
-          <Column key="2" items={itemsColumnM} />
-          <Column key="3" items={itemsColumnL} />
+          <Column key="right" items={itemsColumnR} />
+          <Column key="medium" items={itemsColumnM} />
+          <Column key="left" items={itemsColumnL} />
         </div>
       </div>
       <LoopTextComponents />

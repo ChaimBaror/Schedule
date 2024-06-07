@@ -9,17 +9,21 @@ import EditCard from "./EditCard";
 
 interface Props {
   item: Item;
+  onEdit: (item: Item) => void;
+  onDelete: (item: Item) => void;
 }
 
-const Card: React.FC<Props> = ({ item }) => {
+const Card: React.FC<Props> = ({ item, onEdit, onDelete }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [formData, setFormData] = useState<Item>(item);
 
   useEffect(() => {
     setFormData(item);
   }, [item]);
-  
-  
+
+  useEffect(() => {
+    onEdit(formData);
+  }, [formData]);
 
   const calculateDynamicTime = (time: Time) => {
     if (time.dynamic) {

@@ -35,3 +35,32 @@ export async function POST() {
   return Response.json(data)
 }
 
+export async function DELETE(id: string) {
+  const res = await fetch(url + `/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'API-Key': process.env.DATA_API_KEY!,
+    },
+  })
+
+  const data = await res.json()
+
+  return Response.json(data)
+}
+
+export async function PUT(id: string) {
+  const res = await fetch(url + `/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'API-Key': process.env.DATA_API_KEY!,
+    },
+    body: JSON.stringify({ time: new Date().toISOString() }),
+  })
+
+  const data = await res.json()
+
+  return Response.json(data)
+}
+
