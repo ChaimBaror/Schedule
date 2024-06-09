@@ -24,6 +24,7 @@ const EditColumn: React.FC<Props> = ({
   const handleAddTime = () => {
     setListItemsState(
       [...listItemsState, {
+      _id: "",
       title: "new time",
       description: "a new time",
       times: [],
