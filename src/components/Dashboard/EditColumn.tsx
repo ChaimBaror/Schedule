@@ -19,13 +19,24 @@ const EditColumn: React.FC<Props> = ({
   const [formData, setFormData] = useState<Item>(listItems[0]);
   const [updatateAndSave, setUpdatateAndSave] = useState(false);
 
-  //   const handleAddItem = (item: Item) => {
-  //     setListItems([...listItems, item]);
-  //   };
+  const [col, setCol] = useState<string>(listItems[0].col || "");
 
-  //   const handleDeleteItem = (item: Item) => {
-  //     setListItems(listItems.filter((i) => i._id !== item._id));
-  //   };
+  const handleAddTime = () => {
+    setListItemsState(
+      [...listItemsState, {
+      title: "new time",
+      description: "a new time",
+      times: [],
+      col: col,
+      index: listItemsState.length + 1,
+    }]
+    );
+    
+  };
+
+  const handleDeleteItem = (item: Item) => {
+    setListItems(listItems.filter((i) => i._id !== item._id));
+  };
 
   //   const handleEditItem = (item: Item) => {
   //     console.log("handleEditItem ", item);
@@ -163,6 +174,13 @@ const EditColumn: React.FC<Props> = ({
                 Update
               </Button>
             )}
+            <Button
+              type="button"
+              onClick={handleAddTime}
+              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4"
+            >
+              + Add Time
+            </Button>
             <Button
               onClick={() => handleClosePopup()}
               type="button"
