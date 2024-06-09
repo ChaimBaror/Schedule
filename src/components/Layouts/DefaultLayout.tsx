@@ -8,12 +8,12 @@ export default function DefaultLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <>
       {/* Page Wrapper Start */}
-      <div className="flex overflow-hidden">
+      <div className="flex overflow-hidden w-screen">
         {/* Sidebar Start */}
         <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         {/* Sidebar End */}
