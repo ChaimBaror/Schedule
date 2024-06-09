@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "../Button";
-import { putItems } from "@/services/time.service";
+import { postItems } from "@/services/time.service";
 import EditCard from "./EditCard";
 
 interface Props {
@@ -64,7 +64,7 @@ const EditColumn: React.FC<Props> = ({
   };
 
   const updatedList = () => {
-    listItemsState.map((item, index) => putItems({ ...item, index: index }));
+    listItemsState.map((item, index) => postItems({ ...item, index: index }));
     handleClosePopup();
   };
 

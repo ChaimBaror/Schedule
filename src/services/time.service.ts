@@ -67,27 +67,27 @@ export const deleteItems = async (id: string) => {
   }
 };
 
-export const putItems = async (itemData: Item) => {
-  console.log("putItems", itemData);
-  try {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(itemData), // Include the item data in the request body
-    });
+// export const putItems = async (itemData: Item) => {
+//   console.log("putItems", itemData);
+//   try {
+//     const response = await fetch(url, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(itemData), // Include the item data in the request body
+//     });
 
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
+//     if (!response.ok) {
+//       throw new Error("Network response was not ok");
+//     }
 
-    const result = await response.json();
-    console.log("Item updated successfully:", result);
-  } catch (error) {
-    console.error("Error updating item:", error);
+//     const result = await response.json();
+//     console.log("Item updated successfully:", result);
+//   } catch (error) {
+//     console.error("Error updating item:", error);
     
-  }
+//   }
 
-};
+// };
 

@@ -1,6 +1,4 @@
 import React, { Suspense, useEffect, useState } from "react";
-import { putItems } from "@/services/time.service";
-import { Button } from "../Button";
 import Card from "./CardComponent";
 import EditColumn from "./EditColumn";
 
@@ -14,8 +12,6 @@ const Column: React.FC<ColumnProps> = ({ items }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
-    console.log("items Column fathe", items);
-    
     setListItems(items);
   }, [items]);
 
