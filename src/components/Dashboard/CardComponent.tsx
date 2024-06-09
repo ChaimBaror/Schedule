@@ -5,25 +5,18 @@ import {
   getDailyLearningDafYomi,
   getZmanim,
 } from "@/services/hebcal.service";
-import EditCard from "./EditCard";
 
 interface Props {
   item: Item;
-  onEdit: (item: Item) => void;
-  onDelete: (item: Item) => void;
+  onEdit: () => void;
 }
 
-const Card: React.FC<Props> = ({ item, onEdit, onDelete }) => {
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+const Card: React.FC<Props> = ({ item, onEdit }) => {
   const [formData, setFormData] = useState<Item>(item);
 
   useEffect(() => {
     setFormData(item);
   }, [item]);
-
-  useEffect(() => {
-    onEdit(formData);
-  }, [formData]);
 
   const calculateDynamicTime = (time: Time) => {
     if (time.dynamic) {
@@ -48,60 +41,6 @@ const Card: React.FC<Props> = ({ item, onEdit, onDelete }) => {
     return time.val;
   };
 
-  const handleOpenPopup = () => {
-    setIsPopupOpen(true);
-  };
-
-  const handleClosePopup = () => {
-    setIsPopupOpen(false);
-    setFormData;
-  };
-
-  const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
-    index?: number,
-    field?: string
-  ) => {
-    if (index !== undefined && field) {
-      const updatedTimes = [...formData.times];
-      updatedTimes[index] = { ...updatedTimes[index], [field]: e.target.value };
-      setFormData({ ...formData, times: updatedTimes });
-    } else {
-      const { name, value } = e.target;
-      setFormData({ ...formData, [name]: value });
-    }
-  };
-
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Implement the logic to update the item with the new data in formData
-    setIsPopupOpen(false);
-  };
-
-  const handleAddTime = () => {
-    setFormData({
-      ...formData,
-      times: [
-        ...formData.times,
-        {
-          val: "00:00 ",
-          dynamic: false,
-          zman: "שקיעה",
-          nimus: "0",
-          name: "חדש ",
-        },
-      ],
-    });
-  };
-  const handleChangeIndex = (updatedTimes: Time[]) => {
-    setFormData({ ...formData, times: updatedTimes });
-  };
-  const handleDeleteTime = (index: number) => {
-    const updatedTimes = formData.times.filter((_, i) => i !== index);
-    setFormData({ ...formData, times: updatedTimes });
-  };
 
   return (
     <div className="relative card px-3 max-w-xl text-2xl group">
@@ -136,7 +75,7 @@ const Card: React.FC<Props> = ({ item, onEdit, onDelete }) => {
       </div>
       <button
         className=" px-4 py-2 rounded absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
-        onClick={handleOpenPopup}
+        onClick={onEdit}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -153,18 +92,6 @@ const Card: React.FC<Props> = ({ item, onEdit, onDelete }) => {
           />
         </svg>
       </button>
-
-      {isPopupOpen && (
-        <EditCard
-          handleClosePopup={handleClosePopup}
-          handleChangeIndex={handleChangeIndex}
-          handleAddTime={handleAddTime}
-          formData={formData}
-          handleDeleteTime={handleDeleteTime}
-          handleInputChange={handleInputChange}
-          handleFormSubmit={handleFormSubmit}
-        />
-      )}
     </div>
   );
 };

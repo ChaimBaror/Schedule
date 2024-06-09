@@ -8,10 +8,10 @@ interface Time {
 }
 
 interface Item {
-  _id?: string | number;
+  _id: string | number;
   title: string;
   times: Time[];
   description?: string;
   col?: string;
-  index?: number | string;
+  index: number;
 }

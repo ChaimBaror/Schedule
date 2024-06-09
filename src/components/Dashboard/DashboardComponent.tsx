@@ -1,9 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Column from "./Column-component";
-import Headers from "./Headers-component";
-import { LoopTextComponents } from "./Loop-text-component";
-import BackgroundImage from "./Layouts/BackgrongImage";
+import Column from "./ColumnComponent";
+import Headers from "../Headers-component";
+import { LoopTextComponents } from "../Loop-text-component";
+import BackgroundImage from "../Layouts/BackgrongImage";
 import { dataFetch, getTimeList } from "@/services/time.service";
 
 const Dashboard: React.FC = () => {
@@ -17,7 +17,7 @@ const Dashboard: React.FC = () => {
 
   const fetchData = async () => {
     try {
-      const { right, medium, left } = await dataFetch();
+      const { right, medium, left } = await dataFetch();      
       setItemsL(left);
       setItemsM(medium);
       setItemsR(right);

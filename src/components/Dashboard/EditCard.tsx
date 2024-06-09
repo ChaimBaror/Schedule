@@ -1,33 +1,71 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface Props {
   handleClosePopup: () => void;
-  handleChangeIndex: (times: Time[]) => void;
   formData: Item;
-  handleInputChange: (
-    event: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
-    index?: number,
-    field?: string
-  ) => void;
-  handleFormSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  handleAddTime: () => void;
-  handleDeleteTime: (index: number) => void;
+  setFormData: (item: Item) => void;
 }
 
 const EditCard: React.FC<Props> = ({
   handleClosePopup,
   formData,
-  handleInputChange,
-  handleFormSubmit,
-  handleAddTime,
-  handleDeleteTime,
-  handleChangeIndex,
+  setFormData,
 }) => {
   const [expandedTimes, setExpandedTimes] = useState<boolean[]>(
     formData.times.map(() => false)
   );
+
+  const [editedFormData, setEditedFormData] = useState<Item>(formData);
+
+  useEffect(() => {
+    console.log("editedFormData", editedFormData);
+  }, [editedFormData]);
+
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+    index?: number,
+    field?: string
+  ) => {
+    if (index !== undefined && field) {
+      const updatedTimes = [...editedFormData.times];
+      updatedTimes[index] = { ...updatedTimes[index], [field]: e.target.value };
+      setEditedFormData({ ...editedFormData, times: updatedTimes });
+    } else {
+      const { name, value } = e.target;
+      setEditedFormData({ ...editedFormData, [name]: value });
+    }
+  };
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormData(editedFormData);
+    handleClosePopup();
+  };
+
+  const handleAddTime = () => {
+    setEditedFormData({
+      ...editedFormData,
+      times: [
+        ...editedFormData.times,
+        {
+          val: "00:00 ",
+          dynamic: false,
+          zman: "שקיעה",
+          nimus: "0",
+          name: "חדש ",
+        },
+      ],
+    });
+  };
+  const handleChangeIndex = (updatedTimes: Time[]) => {
+    setEditedFormData({ ...editedFormData, times: updatedTimes });
+  };
+  const handleDeleteTime = (index: number) => {
+    const updatedTimes = editedFormData.times.filter((_, i) => i !== index);
+    setEditedFormData({ ...editedFormData, times: updatedTimes });
+  };
 
   const toggleExpand = (index: number) => {
     const updatedExpandedTimes = [...expandedTimes];
@@ -37,7 +75,7 @@ const EditCard: React.FC<Props> = ({
 
   const moveItemUp = (index: number) => {
     if (index > 0) {
-      const updatedTimes = [...formData.times];
+      const updatedTimes = [...editedFormData.times];
       const temp = updatedTimes[index - 1];
       updatedTimes[index - 1] = updatedTimes[index];
       updatedTimes[index] = temp;
@@ -47,8 +85,8 @@ const EditCard: React.FC<Props> = ({
 
   // Function to move item down
   const moveItemDown = (index: number) => {
-    if (index < formData.times.length - 1) {
-      const updatedTimes = [...formData.times];
+    if (index < editedFormData.times.length - 1) {
+      const updatedTimes = [...editedFormData.times];
       const temp = updatedTimes[index + 1];
       updatedTimes[index + 1] = updatedTimes[index];
       updatedTimes[index] = temp;
@@ -58,8 +96,11 @@ const EditCard: React.FC<Props> = ({
 
   return (
     <div className="z-50 fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-8 rounded-lg shadow-2xl max-w-lg w-full">
-        <h2 className="text-2xl font-bold mb-4 text-gray-800">Edit Card</h2>
+      <div
+        className="bg-white p-8 rounded-lg shadow-2xl max-w-lg w-full"
+        style={{ backgroundImage: `url("/assets/dashboard-2.png")` }}
+      >
+        <h2 className="text-2xl font-bold mb-4 text-gray-800 bg-gray-200">Edit Item</h2>
         <form onSubmit={handleFormSubmit}>
           <div className="mb-6">
             <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -68,14 +109,14 @@ const EditCard: React.FC<Props> = ({
             <input
               type="text"
               name="title"
-              value={formData.title}
+              value={editedFormData.title}
               onChange={handleInputChange}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
 
-          {formData.times?.map((time, index) => (
-            <div key={index} className="mb-6 bg-g p-8 rounded-lg shadow-2xl">
+          {editedFormData.times?.map((time, index) => (
+            <div key={index} className="mb-6 bg-g p-8 rounded-lg shadow-2xl bg-gray-200">
               <div className="flex justify-between items-center">
                 <label className="block text-gray-700 text-sm font-bold">
                   {time.name || time.val || "Time" + " " + (index + 1)}
@@ -144,9 +185,20 @@ const EditCard: React.FC<Props> = ({
                         />
                       </svg>
                     ) : (
-                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
-                     </svg>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
+                        />
+                      </svg>
                     )}
                   </button>
                   <button
@@ -173,7 +225,6 @@ const EditCard: React.FC<Props> = ({
               </div>
               {expandedTimes[index] && (
                 <>
-                  {time.name !== undefined && (
                     <>
                       <label className="block text-gray-700 text-sm font-bold mb-2 mt-2">
                         Name
@@ -186,8 +237,7 @@ const EditCard: React.FC<Props> = ({
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       />
                     </>
-                  )}
-                  {time.val !== undefined && (
+               
                     <>
                       <label className="block text-gray-700 text-sm font-bold mb-2 mt-2">
                         Value
@@ -200,26 +250,23 @@ const EditCard: React.FC<Props> = ({
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       />
                     </>
-                  )}
-                  {time.dynamic !== undefined && (
-                    <>
-                      <label className="block text-gray-700 text-sm font-bold mb-2 mt-2">
-                        Dynamic
-                      </label>
-                      <div className="flex items-center mb-2">
-                        <input
-                          type="checkbox"
-                          checked={time.dynamic}
-                          onChange={(e) =>
-                            handleInputChange(e, index, "dynamic")
-                          }
-                          className="mr-2 leading-tight"
-                        />
-                        <span className="text-gray-700">Dynamic</span>
-                      </div>
-                    </>
-                  )}
-                  {time.zman !== undefined && (
+                 
+
+                  <>
+                    <label className="block text-gray-700 text-sm font-bold mb-2 mt-2">
+                      Dynamic
+                    </label>
+                    <div className="flex items-center mb-2">
+                      <input
+                        type="checkbox"
+                        checked={time.dynamic}
+                        onChange={(e) => handleInputChange(e, index, "dynamic")}
+                        className="mr-2 leading-tight"
+                      />
+                      <span className="text-gray-700">Dynamic</span>
+                    </div>
+                  </>
+
                     <>
                       <label className="block text-gray-700 text-sm font-bold mb-2 mt-2">
                         Zman
@@ -238,8 +285,7 @@ const EditCard: React.FC<Props> = ({
                         </option>
                       </select>
                     </>
-                  )}
-                  {time.nimus !== undefined && (
+                
                     <>
                       <label className="block text-gray-700 text-sm font-bold mb-2 mt-2">
                         Nimus
@@ -251,7 +297,7 @@ const EditCard: React.FC<Props> = ({
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       />
                     </>
-                  )}
+                 
                 </>
               )}
             </div>
@@ -263,14 +309,14 @@ const EditCard: React.FC<Props> = ({
           >
             + Add Time
           </button>
-          {formData.description !== undefined && (
+          {editedFormData.description !== undefined && (
             <div className="mb-6">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Description
               </label>
               <textarea
                 name="description"
-                value={formData.description}
+                value={editedFormData.description}
                 onChange={handleInputChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />

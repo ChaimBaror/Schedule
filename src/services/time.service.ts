@@ -1,5 +1,5 @@
 
-const beatUrl = process.env.NEXT_PUBLIC_BASE_API || "https://api-express-schedule.vercel.app/"
+const beatUrl = process.env.NEXT_PUBLIC_BASE_API || "https://api-express-schedule.vercel.app"
 console.log("beatUrl", beatUrl);
 console.log("process.env.BASE_API", process.env.NEXT_PUBLIC_BASE_API);
 import { Right, Medium, Left } from "@/services/data";
