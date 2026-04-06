@@ -1,3 +1,4 @@
+'use client';
 import React, { useEffect, useRef } from 'react';
 import { RequireFullscreen } from './RequireFullscreen';
 
@@ -5,7 +6,8 @@ export const HeaderFullscreen: React.FC = () => {
   const rootRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    rootRef.current = document.getElementById('Fullscreen-Background');
+    rootRef.current =
+      document.getElementById('Fullscreen-Background') ?? document.documentElement;
   }, []);
 
   return (
@@ -13,11 +15,12 @@ export const HeaderFullscreen: React.FC = () => {
       {(isFullscreen) => (
         <div>
           <button >
-            <span className="bg-gray-500 text-white font-medium py-1 px-2 rounded">full-screen</span>
+            <span className="bg-gray-500 text-white font-medium py-1 px-2 rounded">
+              {isFullscreen ? 'exit' : 'full-screen'}
+            </span>
           </button>
         </div>
       )}
     </RequireFullscreen>
   );
 };
-

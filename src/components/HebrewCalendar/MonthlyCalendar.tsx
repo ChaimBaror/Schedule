@@ -31,7 +31,7 @@ function fmt(d: Date): string {
 
 function getDafYomi(hd: HDate): string {
   try {
-    const ev = DailyLearning.lookup("dafYomi", hd);
+    const ev = DailyLearning.lookup("dafYomi", hd, false);
     return ev ? ev.render("he") : "";
   } catch {
     return "";

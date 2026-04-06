@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import SessionProvider from '@/components/SessionProider';
 import { getServerSession } from 'next-auth';
 import { authOptions } from "@/utils/authOptions";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Timetable",
@@ -22,7 +19,7 @@ export default async function RootLayout({
   return (
     <html lang="he">
       <SessionProvider session={session}>
-        <body className={inter.className}>{children}</body>
+        <body>{children}</body>
       </SessionProvider>
     </html>
   );

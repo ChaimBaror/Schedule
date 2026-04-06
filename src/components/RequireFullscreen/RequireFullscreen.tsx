@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 interface RequireFullscreenProps {
-  component: React.MutableRefObject<HTMLElement | null>;
+  component: React.RefObject<HTMLElement | null>;
   children: (isFullscreen: boolean) => React.ReactNode;
 }
 
@@ -32,5 +32,5 @@ export const RequireFullscreen: React.FC<RequireFullscreenProps> = ({ component,
     };
   }, []);
 
-  return <div onClick={handleFullScreen}>{children(isFullscreen)}</div>;
+  return <div onClick={handleFullScreen} style={{ cursor: 'pointer' }}>{children(isFullscreen)}</div>;
 };
