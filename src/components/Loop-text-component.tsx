@@ -1,64 +1,45 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { getEvents, getZmanim } from "../services/hebcal.service";
+import { getEventsForLocation, getZmanimForLocation } from "../services/hebcal.service";
+import { DEFAULT_LOCATION } from "../services/hebcal.service";
 import { formatTime } from "@/utils/utils";
 
 export const LoopTextComponents = () => {
-  const [zmanimData, setZmanimData] = useState<string>('');
-  const currentDate = new Date();
-
+  const [ticker, setTicker] = useState<string>('');
 
   useEffect(() => {
-    addZmanimAndEventsToList();
-  }, [currentDate.getDay()]);
+    buildTicker();
+  }, []);
 
-  const addZmanimAndEventsToList = () => {
+  const buildTicker = () => {
     const currentDate = new Date();
-    const zmanim = getZmanim();
+    const zmanim = getZmanimForLocation(DEFAULT_LOCATION);
     const zmanimEntries = [
-      { label: "חצות", time: zmanim.chatzot() },
       { label: "זריחה", time: zmanim.sunrise() },
-      { label: "שקיעה", time: zmanim.shkiah() },
       { label: "סוף זמן ק''ש", time: zmanim.sofZmanShma() },
+      { label: "חצות", time: zmanim.chatzot() },
       { label: "מנחה גדולה", time: zmanim.minchaGedola() },
+      { label: "שקיעה", time: zmanim.shkiah() },
     ];
-    const formattedZmanim = zmanimEntries.map(
-      (entry) => `${entry.label}: ${formatTime(entry.time)}`
-    );
+    const zmanimStr = zmanimEntries.map((e) => `${e.label}: ${formatTime(e.time)}`).join("  🔹  ");
 
-    const todayEvents = getEvents().filter(
-      (ev) =>
-        ev.getDate().greg().toLocaleDateString() ===
-        currentDate.toLocaleDateString()
+    const todayEvents = getEventsForLocation(DEFAULT_LOCATION).filter(
+      (ev) => ev.getDate().greg().toLocaleDateString() === currentDate.toLocaleDateString()
     );
-    const formattedEvents = todayEvents.map((ev) => ev.render("he"));
+    const eventsStr = todayEvents.map((ev) => ev.render("he")).join("  🔹  ");
 
-    setZmanimData(
-      (pro) => pro + [...formattedZmanim, ...formattedEvents].join(" 🔹 ") + " 🔹 "
-    );
+    setTicker([zmanimStr, eventsStr].filter(Boolean).join("  🔹  ") + "  🔹  ");
   };
 
-  return (
-    <div className="direction-rtl w-full inline-flex flex-nowrap bg-[#AE8D3E] lg:bottom-5 absolute  text-3xl text-bold text-black truncate py-3	">
-      <div
-        className="flex items-center justify-center animate-infinite-scroll"
-        dangerouslySetInnerHTML={{ __html: zmanimData }}
-      />
+  if (!ticker) return null;
 
-      <div
-        className="flex items-center justify-center animate-infinite-scroll"
-        aria-hidden="true"
-        dangerouslySetInnerHTML={{
-          __html: zmanimData,
-        }}
-      />
-      <div
-        className="flex items-center justify-center animate-infinite-scroll"
-        aria-hidden="true"
-        dangerouslySetInnerHTML={{
-          __html: zmanimData,
-        }}
-      />
+  return (
+    <div className="direction-rtl w-full overflow-hidden bg-[#AE8D3E] bottom-0 fixed z-20 text-base sm:text-lg lg:text-xl font-bold text-black py-2">
+      <div className="flex whitespace-nowrap">
+        <span className="animate-ticker inline-block px-4">{ticker}</span>
+        <span className="animate-ticker inline-block px-4" aria-hidden>{ticker}</span>
+        <span className="animate-ticker inline-block px-4" aria-hidden>{ticker}</span>
+      </div>
     </div>
   );
 };

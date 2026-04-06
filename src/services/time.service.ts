@@ -1,3 +1,4 @@
+import type { Item } from "@/types/items";
 
 const beatUrl = process.env.NEXT_PUBLIC_BASE_API || "https://api-express-schedule.vercel.app"
 console.log("beatUrl", beatUrl);

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import type { Item } from "@/types/items";
 import { Button } from "../Button";
 import { postItems } from "@/services/time.service";
 import EditCard from "./EditCard";

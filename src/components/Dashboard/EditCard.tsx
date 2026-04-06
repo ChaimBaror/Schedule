@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import type { Item, Time } from "@/types/items";
 
 interface Props {
   handleClosePopup: () => void;
@@ -52,7 +53,7 @@ const EditCard: React.FC<Props> = ({
         {
           val: "00:00 ",
           dynamic: false,
-          zman: "שקיעה",
+          zman: undefined,
           nimus: "0",
           name: "חדש ",
         },

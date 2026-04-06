@@ -1,40 +1,74 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Schedule — לוח זמנים לבית כנסת
+
+A multi-tenant synagogue prayer timetable app built with Next.js 14, React 18, TypeScript, and Tailwind CSS.
+
+**[Live Demo](https://schedule-gamma-nine.vercel.app/)** · [GitHub](https://github.com/ChaimBaror/Schedule)
+
+---
+
+## Features
+
+- **Dynamic zmanim** — sunrise, sunset, candle lighting, shabbat end and more via `@hebcal/core`
+- **Hebrew calendar** — monthly view with daf yomi, parasha, holidays per day
+- **8 display templates** — Classic, Modern, LED, Sephardic, Parchment, Night, Golden
+- **Template switcher** — switch templates live from the header, saved to localStorage
+- **Multi-tenant** — each kehila has its own slug, template, logo, location and announcements
+- **Admin panel** — manage announcements (simcha / avel / notice), set logo URL, pick template, embed code
+- **Public kiosk** — `/kehila/[slug]` fullscreen display for screens in the synagogue
+- **Responsive** — horizontal scroll on mobile, 3-column grid on desktop
+
+---
+
+## Routes
+
+| Path | Description |
+|------|-------------|
+| `/` | Main dashboard (template switcher in header) |
+| `/calendar` | Hebrew monthly calendar |
+| `/kehila/[slug]` | Public kiosk page for a kehila |
+| `/admin/[slug]` | Admin panel for a kehila |
+
+---
 
 ## Getting Started
 
-# [Schedule demo](https://schedule-gamma-nine.vercel.app/)
-
-https://github.com/ChaimBaror/Schedule
-
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Tech Stack
 
-## Learn More
+- **Next.js 14** (App Router)
+- **React 18** + TypeScript
+- **Tailwind CSS**
+- **@hebcal/core** + **@hebcal/learning** — Hebrew calendar & zmanim
+- **next-auth** — authentication
+- **firebase-admin** — backend data (production)
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```
+src/
+  app/                  # Next.js App Router pages
+    admin/[slug]/       # Admin panel
+    kehila/[slug]/      # Public kiosk
+    calendar/           # Hebrew monthly calendar
+  components/
+    Header/             # Navbar with template picker
+    HebrewCalendar/     # Monthly Hebrew calendar
+    Layouts/            # DefaultLayout with TemplateProvider
+  context/
+    TemplateContext.tsx  # Global template selection (localStorage)
+  services/
+    hebcal.service.ts   # Zmanim & Hebrew date calculations
+    kehila.service.ts   # Multi-tenant kehila data
+  templates/            # ClassicTemplate, ModernTemplate, LedTemplate…
+  types/                # TypeScript interfaces
+```

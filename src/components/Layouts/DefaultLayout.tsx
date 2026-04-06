@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
+import { TemplateProvider } from "@/context/TemplateContext";
 
 export default function DefaultLayout({
   children,
@@ -11,9 +12,9 @@ export default function DefaultLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <>
+    <TemplateProvider>
       {/* Page Wrapper Start */}
-      <div className="flex overflow-hidden w-screen">
+      <div className="flex overflow-hidden w-full">
         {/* Sidebar Start */}
         <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         {/* Sidebar End */}
@@ -33,6 +34,6 @@ export default function DefaultLayout({
         {/* Content Area End */}
       </div>
       {/* Page Wrapper End */}
-    </>
+    </TemplateProvider>
   );
 }
