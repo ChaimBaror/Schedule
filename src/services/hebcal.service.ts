@@ -1,4 +1,4 @@
-import { HebrewCalendar, HDate, Location, Zmanim, GeoLocation, DailyLearning } from '@hebcal/core';
+import { HebrewCalendar, HDate, Location, Zmanim, GeoLocation, DailyLearning, CalOptions } from '@hebcal/core';
 import '@hebcal/learning';
 import type { KehilaLocation } from '@/types/kehila';
 
@@ -45,23 +45,21 @@ export function getCandleLightingForLocation(location: KehilaLocation = DEFAULT_
 
 export function getDailyLearningDafYomi(): string {
   const hebrewDate = new HDate(new Date());
-  const dafYomiEvent = DailyLearning.lookup('dafYomi', hebrewDate);
-  return dafYomiEvent.render('he');
+  const dafYomiEvent = DailyLearning.lookup('dafYomi', hebrewDate, false);
+  return dafYomiEvent?.render('he') ?? '';
 }
 
 export function getEventsForLocation(location: KehilaLocation = DEFAULT_LOCATION) {
   const today = new Date();
   const hebrewDate = new HDate(today);
-  const calendarOptions = {
+  const calendarOptions: CalOptions = {
     year: hebrewDate.getFullYear(),
-    latitude: location.lat,
-    longitude: location.lng,
     isHebrewYear: true,
     candlelighting: true,
     shabbatMevarchim: true,
     noSpecialShabbat: true,
-    dailyLearning: { dafYomi: hebrewDate },
-    location: Location.lookup('Tel Aviv'),
+    dailyLearning: { dafYomi: true },
+    location: new Location(location.lat, location.lng, false, location.tzid, location.cityName),
     addHebrewDates: true,
     sedrot: true,
     omer: true,

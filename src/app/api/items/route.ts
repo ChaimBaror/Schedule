@@ -1,22 +1,18 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
-
+import { Right, Medium, Left } from "@/services/data";
 
 const beatUrl = process.env.NEXT_PUBLIC_BASE_API || "https://api-express-schedule.vercel.app"
 const url = `${beatUrl}/api/item/`
 
 export async function GET() {
-
   try {
-    const response = await fetch(`${url}`);
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
+    const response = await fetch(url, { signal: AbortSignal.timeout(5000) });
+    if (!response.ok) throw new Error("API error");
     const data = await response.json();
-    console.log(data);
     return NextResponse.json(data);
-  } catch (error) {
-    console.error("Error fetching data:", error);
+  } catch {
+    // Fallback to local default data when external API is unavailable
+    return NextResponse.json({ right: Right, medium: Medium, left: Left });
   }
 }
 
