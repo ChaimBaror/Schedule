@@ -4,6 +4,8 @@ import { useParams } from "next/navigation";
 import {
   getKehilaState,
   getKehilaItems,
+  getKehilaBlocks,
+  saveKehilaBlocks,
   saveAnnouncement,
   deleteAnnouncement,
   updateKehilaTemplate,
@@ -13,14 +15,19 @@ import { buildZmanimDisplay } from "@/utils/zmanim-display";
 import { TEMPLATE_META } from "@/templates/index";
 import type { KehilaState, Announcement, AnnouncementType, TemplateId } from "@/types/kehila";
 import type { Item } from "@/types/items";
+import type { Block } from "@/types/block";
 import type { ZmanimDisplay } from "@/templates/types";
-import { ClassicTemplate }   from "@/templates/ClassicTemplate";
-import { ModernTemplate }    from "@/templates/ModernTemplate";
-import { LedTemplate }       from "@/templates/LedTemplate";
-import { SephardicTemplate } from "@/templates/SephardicTemplate";
-import { ParchmentTemplate } from "@/templates/ParchmentTemplate";
-import { NightTemplate }     from "@/templates/NightTemplate";
-import { GoldenTemplate }    from "@/templates/GoldenTemplate";
+import { ScheduleTab } from "@/components/Admin/BlockEditor";
+import { ClassicTemplate }     from "@/templates/ClassicTemplate";
+import { ModernTemplate }      from "@/templates/ModernTemplate";
+import { LedTemplate }         from "@/templates/LedTemplate";
+import { SephardicTemplate }   from "@/templates/SephardicTemplate";
+import { ParchmentTemplate }   from "@/templates/ParchmentTemplate";
+import { NightTemplate }       from "@/templates/NightTemplate";
+import { GoldenTemplate }      from "@/templates/GoldenTemplate";
+import { RoyalBlueTemplate }   from "@/templates/RoyalBlueTemplate";
+import { MarbleTemplate }      from "@/templates/MarbleTemplate";
+import { WoodTemplate }        from "@/templates/WoodTemplate";
 
 // ─── Announcement form ────────────────────────────────────────────────────────
 const ANN_TYPES: { value: AnnouncementType; label: string; icon: string }[] = [
@@ -122,8 +129,9 @@ export default function AdminPage() {
   const { slug } = useParams<{ slug: string }>();
   const [state, setState] = useState<KehilaState | null>(null);
   const [items, setItems] = useState<{ right: Item[]; medium: Item[]; left: Item[] } | null>(null);
+  const [blocks, setBlocks] = useState<Block[]>([]);
   const [zmanim, setZmanim] = useState<ZmanimDisplay | null>(null);
-  const [tab, setTab] = useState<"preview" | "announcements" | "settings">("announcements");
+  const [tab, setTab] = useState<"schedule" | "preview" | "announcements" | "settings">("schedule");
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -131,6 +139,7 @@ export default function AdminPage() {
     if (!s) { setError(true); return; }
     setState(s);
     setItems(getKehilaItems(slug));
+    setBlocks(getKehilaBlocks(slug));
     setZmanim(buildZmanimDisplay(s.kehila.location));
   }, [slug]);
 
@@ -170,6 +179,11 @@ export default function AdminPage() {
     setState((prev) => prev ? { ...prev, kehila: { ...prev.kehila, logoUrl: url || undefined } } : prev);
   };
 
+  const handleBlocksChange = (updated: Block[]) => {
+    setBlocks(updated);
+    saveKehilaBlocks(slug, updated);
+  };
+
   const templateProps = {
     kehila: state.kehila,
     itemsRight: items.right,
@@ -178,15 +192,19 @@ export default function AdminPage() {
     announcements: state.announcements,
     zmanim,
     isKiosk: true,
+    blocks,
   };
 
   const PreviewCmp =
-    state.kehila.templateId === "modern"    ? ModernTemplate    :
-    state.kehila.templateId === "led"       ? LedTemplate       :
-    state.kehila.templateId === "sephardic" ? SephardicTemplate :
-    state.kehila.templateId === "parchment" ? ParchmentTemplate :
-    state.kehila.templateId === "night"     ? NightTemplate     :
-    state.kehila.templateId === "golden"    ? GoldenTemplate    :
+    state.kehila.templateId === "modern"      ? ModernTemplate      :
+    state.kehila.templateId === "led"         ? LedTemplate         :
+    state.kehila.templateId === "sephardic"   ? SephardicTemplate   :
+    state.kehila.templateId === "parchment"   ? ParchmentTemplate   :
+    state.kehila.templateId === "night"       ? NightTemplate       :
+    state.kehila.templateId === "golden"      ? GoldenTemplate      :
+    state.kehila.templateId === "royal-blue"  ? RoyalBlueTemplate   :
+    state.kehila.templateId === "marble"      ? MarbleTemplate      :
+    state.kehila.templateId === "wood"        ? WoodTemplate        :
     ClassicTemplate;
 
   return (
@@ -212,7 +230,7 @@ export default function AdminPage() {
 
       {/* Tabs */}
       <div className="bg-white border-b border-gray-200 px-4 sm:px-8 flex gap-1">
-        {(["announcements", "settings", "preview"] as const).map((t) => (
+        {(["schedule", "announcements", "settings", "preview"] as const).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
@@ -220,12 +238,17 @@ export default function AdminPage() {
               tab === t ? "border-gray-800 text-gray-800" : "border-transparent text-gray-500 hover:text-gray-700"
             }`}
           >
-            {t === "announcements" ? "📢 מודעות" : t === "settings" ? "⚙️ הגדרות" : "👁️ תצוגה מקדימה"}
+            {t === "schedule" ? "📋 לוח זמנים" : t === "announcements" ? "📢 מודעות" : t === "settings" ? "⚙️ הגדרות" : "👁️ תצוגה מקדימה"}
           </button>
         ))}
       </div>
 
       <main className="max-w-5xl mx-auto px-4 sm:px-8 py-6 space-y-4">
+        {/* Schedule tab */}
+        {tab === "schedule" && (
+          <ScheduleTab blocks={blocks} onBlocksChange={handleBlocksChange} />
+        )}
+
         {/* Announcements tab */}
         {tab === "announcements" && (
           <>
