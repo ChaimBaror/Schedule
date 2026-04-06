@@ -1,23 +1,28 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { getKehilaState, getKehilaItems } from "@/services/kehila.service";
+import { getKehilaState, getKehilaItems, getKehilaBlocks } from "@/services/kehila.service";
 import { buildZmanimDisplay } from "@/utils/zmanim-display";
 import type { KehilaState } from "@/types/kehila";
 import type { ZmanimDisplay } from "@/templates/types";
 import type { Item } from "@/types/items";
-import { ClassicTemplate }   from "@/templates/ClassicTemplate";
-import { ModernTemplate }    from "@/templates/ModernTemplate";
-import { LedTemplate }       from "@/templates/LedTemplate";
-import { SephardicTemplate } from "@/templates/SephardicTemplate";
-import { ParchmentTemplate } from "@/templates/ParchmentTemplate";
-import { NightTemplate }     from "@/templates/NightTemplate";
-import { GoldenTemplate }    from "@/templates/GoldenTemplate";
+import type { Block } from "@/types/block";
+import { ClassicTemplate }     from "@/templates/ClassicTemplate";
+import { ModernTemplate }      from "@/templates/ModernTemplate";
+import { LedTemplate }         from "@/templates/LedTemplate";
+import { SephardicTemplate }   from "@/templates/SephardicTemplate";
+import { ParchmentTemplate }   from "@/templates/ParchmentTemplate";
+import { NightTemplate }       from "@/templates/NightTemplate";
+import { GoldenTemplate }      from "@/templates/GoldenTemplate";
+import { RoyalBlueTemplate }   from "@/templates/RoyalBlueTemplate";
+import { MarbleTemplate }      from "@/templates/MarbleTemplate";
+import { WoodTemplate }        from "@/templates/WoodTemplate";
 
 export default function KehilaKioskPage() {
   const { slug } = useParams<{ slug: string }>();
   const [state, setState]   = useState<KehilaState | null>(null);
   const [items, setItems]   = useState<{ right: Item[]; medium: Item[]; left: Item[] } | null>(null);
+  const [blocks, setBlocks] = useState<Block[]>([]);
   const [zmanim, setZmanim] = useState<ZmanimDisplay | null>(null);
   const [error, setError]   = useState(false);
 
@@ -26,6 +31,7 @@ export default function KehilaKioskPage() {
     if (!s) { setError(true); return; }
     setState(s);
     setItems(getKehilaItems(slug));
+    setBlocks(getKehilaBlocks(slug));
     setZmanim(buildZmanimDisplay(s.kehila.location));
   }, [slug]);
 
@@ -50,15 +56,18 @@ export default function KehilaKioskPage() {
     </div>
   );
 
-  const p = { kehila: state.kehila, itemsRight: items.right, itemsMiddle: items.medium, itemsLeft: items.left, announcements: state.announcements, zmanim, isKiosk: true };
+  const p = { kehila: state.kehila, itemsRight: items.right, itemsMiddle: items.medium, itemsLeft: items.left, announcements: state.announcements, zmanim, isKiosk: true, blocks };
 
   switch (state.kehila.templateId) {
-    case "modern":    return <ModernTemplate    {...p} />;
-    case "led":       return <LedTemplate       {...p} />;
-    case "sephardic": return <SephardicTemplate {...p} />;
-    case "parchment": return <ParchmentTemplate {...p} />;
-    case "night":     return <NightTemplate     {...p} />;
-    case "golden":    return <GoldenTemplate    {...p} />;
-    default:          return <ClassicTemplate   {...p} />;
+    case "modern":      return <ModernTemplate      {...p} />;
+    case "led":         return <LedTemplate         {...p} />;
+    case "sephardic":   return <SephardicTemplate   {...p} />;
+    case "parchment":   return <ParchmentTemplate   {...p} />;
+    case "night":       return <NightTemplate       {...p} />;
+    case "golden":      return <GoldenTemplate      {...p} />;
+    case "royal-blue":  return <RoyalBlueTemplate   {...p} />;
+    case "marble":      return <MarbleTemplate      {...p} />;
+    case "wood":        return <WoodTemplate        {...p} />;
+    default:            return <ClassicTemplate      {...p} />;
   }
 }

@@ -1,4 +1,4 @@
-export type TemplateId = "classic" | "modern" | "led" | "mobile" | "sephardic" | "parchment" | "night" | "golden";
+export type TemplateId = "classic" | "modern" | "led" | "mobile" | "sephardic" | "parchment" | "night" | "golden" | "royal-blue" | "marble" | "wood";
 
 export interface KehilaLocation {
   lat: number;
