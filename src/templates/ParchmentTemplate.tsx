@@ -7,6 +7,10 @@ import { calcTime } from "./calcTime";
 import type { KehilaLocation } from "@/types/kehila";
 import { BlockRenderer } from "@/components/BlockRenderers";
 import { isBlockVisible } from "@/utils/block-visibility";
+import { AutoScrollContainer } from "@/components/AutoScroll";
+import { AutoPageColumns } from "@/components/AutoScroll";
+import { Ticker } from "@/components/Ticker";
+import { DEFAULT_DISPLAY_SETTINGS } from "@/types/kehila";
 
 // ─── Card ────────────────────────────────────────────────────────────────────
 
@@ -100,9 +104,9 @@ const ParchmentCard: React.FC<{
 
 const COL_LABELS = ["יום חול", "שבת קודש", "שיעורים"];
 
-// ─── Block column ────────────────────────────────────────────────────────────
+// ─── Block column content ────────────────────────────────────────────────────
 
-const ParchmentBlockColumn: React.FC<{
+const ParchmentBlockColumnContent: React.FC<{
   blocks: Block[];
   colIndex: number;
   location: KehilaLocation;
@@ -111,8 +115,7 @@ const ParchmentBlockColumn: React.FC<{
   const visible = blocks.filter((b) => isBlockVisible(b, now)).sort((a, b) => a.index - b.index);
 
   return (
-    <div className="min-w-[86vw] sm:min-w-[58vw] lg:min-w-0 snap-start flex-shrink-0 lg:flex-shrink">
-      {/* Column header */}
+    <>
       <div
         className="bg-cover bg-center py-1.5 px-4 text-center mb-3"
         style={{ backgroundImage: `url("/assets/row.png")` }}
@@ -142,40 +145,52 @@ const ParchmentBlockColumn: React.FC<{
           </div>
         );
       })}
-    </div>
+    </>
   );
 };
 
-// ─── Ticker ──────────────────────────────────────────────────────────────────
+// ─── Column content ──────────────────────────────────────────────────────────
 
-const ParchmentTicker: React.FC<{ text: string }> = ({ text }) => (
-  <div
-    className="overflow-hidden py-2.5"
-    style={{
-      background: "linear-gradient(90deg, #8B6914, #b8922e, #8B6914)",
-      borderTop: "2px solid rgba(100,60,0,0.3)",
-    }}
-  >
-    <div className="flex whitespace-nowrap">
-      {[0, 1, 2].map((i) => (
-        <span
-          key={i}
-          className="animate-ticker text-sm sm:text-base font-extrabold px-8 shrink-0 tracking-wide"
-          style={{ fontFamily: "'Frank Ruhl Libre', serif", color: "#0f0800" }}
-        >
-          {text}
-        </span>
-      ))}
+const ParchmentColumnContent: React.FC<{
+  items: Item[];
+  colIndex: number;
+  location: KehilaLocation;
+  onEdit?: (item: Item) => void;
+  isKiosk?: boolean;
+}> = ({ items, colIndex, location, onEdit, isKiosk }) => (
+  <>
+    <div
+      className="bg-cover bg-center py-1.5 px-4 text-center mb-3"
+      style={{ backgroundImage: `url("/assets/row.png")` }}
+    >
+      <span
+        className="text-sm sm:text-lg font-extrabold tracking-[0.2em]"
+        style={{ fontFamily: "'Frank Ruhl Libre', serif", color: "#1a0e00" }}
+      >
+        {COL_LABELS[colIndex]}
+      </span>
     </div>
-  </div>
+    {items
+      .sort((a, b) => a.index - b.index)
+      .map((item) => (
+        <ParchmentCard
+          key={item._id}
+          item={item}
+          location={location}
+          onEdit={onEdit}
+          isKiosk={isKiosk}
+        />
+      ))}
+  </>
 );
 
 // ─── Template ────────────────────────────────────────────────────────────────
 
 export const ParchmentTemplate: React.FC<TemplateProps> = ({
   kehila, itemsRight, itemsMiddle, itemsLeft,
-  announcements, zmanim, isKiosk = false, onEdit, blocks,
+  announcements, zmanim, isKiosk = false, onEdit, blocks, displaySettings,
 }) => {
+  const ds = displaySettings ?? DEFAULT_DISPLAY_SETTINGS;
   const useBlocks = blocks && blocks.length > 0;
   const rightBlocks = useMemo(() => blocks?.filter((b) => b.col === "right") ?? [], [blocks]);
   const middleBlocks = useMemo(() => blocks?.filter((b) => b.col === "middle") ?? [], [blocks]);
@@ -184,21 +199,28 @@ export const ParchmentTemplate: React.FC<TemplateProps> = ({
   const active = announcements.filter((a) => !a.expiresAt || new Date(a.expiresAt) > new Date());
   const cols = [itemsRight, itemsMiddle, itemsLeft];
 
-  const annText = active.length > 0
-    ? active.map((a) => `${a.type === "simcha" ? "🎊" : a.type === "avel" ? "🕯️" : "📢"} ${a.text}`).join("   ✦   ")
-    : null;
-
-  const zmanimText = [
-    `זריחה: ${zmanim.sunrise}`,
-    `סוף ק"ש: ${zmanim.sofZmanShma}`,
-    `חצות: ${zmanim.chatzot}`,
-    `מנחה גדולה: ${zmanim.minchaGedola}`,
-    `שקיעה: ${zmanim.shkiah}`,
-    `הדלקת נרות: ${zmanim.candleLighting}`,
+  // Ticker items
+  const tickerItems: string[] = [];
+  if (active.length > 0) {
+    active.forEach((a) => {
+      tickerItems.push(`${a.type === "simcha" ? "🎊" : a.type === "avel" ? "🕯️" : "📢"} ${a.text}`);
+    });
+  }
+  tickerItems.push(
+    `זריחה: ${zmanim.sunrise}`, `סוף ק"ש: ${zmanim.sofZmanShma}`,
+    `חצות: ${zmanim.chatzot}`, `מנחה גדולה: ${zmanim.minchaGedola}`,
+    `שקיעה: ${zmanim.shkiah}`, `הדלקת נרות: ${zmanim.candleLighting}`,
     `צאת שבת: ${zmanim.shabbatEnd}`,
-  ].join("   ❧   ");
+  );
 
-  const tickerText = annText ? `${annText}   ✦   ${zmanimText}` : zmanimText;
+  // Column nodes for auto-paging
+  const columnNodes = useBlocks
+    ? [rightBlocks, middleBlocks, leftBlocks].map((col, ci) => (
+        <ParchmentBlockColumnContent key={ci} blocks={col} colIndex={ci} location={kehila.location} />
+      ))
+    : cols.map((colItems, ci) => (
+        <ParchmentColumnContent key={ci} items={colItems} colIndex={ci} location={kehila.location} onEdit={onEdit} isKiosk={isKiosk} />
+      ));
 
   return (
     <div className="relative w-full h-screen overflow-hidden" dir="rtl">
@@ -296,58 +318,70 @@ export const ParchmentTemplate: React.FC<TemplateProps> = ({
 
         {/* ── Columns ── */}
         <main className="flex-1 px-4 sm:px-8 lg:px-20 overflow-hidden">
-          <div className="flex lg:grid lg:grid-cols-3 overflow-x-auto snap-x snap-mandatory gap-3 sm:gap-4 lg:gap-6 pb-2 lg:overflow-hidden h-full">
-            {useBlocks
-              ? [rightBlocks, middleBlocks, leftBlocks].map((col, ci) => (
-                  <ParchmentBlockColumn
-                    key={ci}
-                    blocks={col}
-                    colIndex={ci}
-                    location={kehila.location}
-                  />
-                ))
-              : cols.map((colItems, ci) => (
-                  <div key={ci} className="min-w-[86vw] sm:min-w-[58vw] lg:min-w-0 snap-start flex-shrink-0 lg:flex-shrink">
-                    {/* Column header */}
-                    <div
-                      className="bg-cover bg-center py-1.5 px-4 text-center mb-3"
-                      style={{ backgroundImage: `url("/assets/row.png")` }}
-                    >
-                      <span
-                        className="text-amber-950/80 text-sm sm:text-base font-bold tracking-[0.2em]"
-                        style={{ fontFamily: "'Frank Ruhl Libre', serif" }}
+          {/* Desktop: 3-column grid with auto-scroll per column */}
+          {/* Desktop */}
+          <div className="hidden lg:block h-full">
+            {ds.desktopLayout === "auto-page" ? (
+              <AutoPageColumns
+                columns={columnNodes}
+                labels={COL_LABELS}
+                interval={ds.desktopPageInterval}
+                transitionDuration={ds.mobileTransitionDuration}
+                showDots
+                dotClassName="bg-amber-800/20 hover:bg-amber-800/40"
+                activeDotClassName="bg-amber-700/70"
+                className="h-full"
+              />
+            ) : (
+              <div className="grid grid-cols-3 gap-6 h-full">
+                {columnNodes.map((node, ci) => (
+                  ds.columnScrollMode === "none"
+                    ? <div key={ci} className="h-full overflow-hidden">{node}</div>
+                    : <AutoScrollContainer
+                        key={ci}
+                        speed={ds.columnScrollSpeed}
+                        pauseAtEdge={ds.columnPauseAtEdge}
+                        mode={ds.columnScrollMode}
+                        className="h-full relative"
                       >
-                        {COL_LABELS[ci]}
-                      </span>
-                    </div>
-                    {colItems
-                      .sort((a, b) => a.index - b.index)
-                      .map((item) => (
-                        <ParchmentCard
-                          key={item._id}
-                          item={item}
-                          location={kehila.location}
-                          onEdit={onEdit}
-                          isKiosk={isKiosk}
-                        />
-                      ))}
-                  </div>
-                ))
-            }
+                        {node}
+                      </AutoScrollContainer>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Mobile/tablet: auto-page between columns */}
+          <div className="lg:hidden h-full">
+            <AutoPageColumns
+              columns={columnNodes}
+              labels={COL_LABELS}
+              interval={ds.mobilePageInterval || 8000}
+              transitionDuration={ds.mobileTransitionDuration}
+              showDots
+              dotClassName="bg-amber-800/20 hover:bg-amber-800/40"
+              activeDotClassName="bg-amber-700/70"
+              className="h-full"
+            />
           </div>
         </main>
-
-        {/* Scroll dots (mobile) */}
-        <div className="flex justify-center gap-1.5 py-2 lg:hidden">
-          {[0, 1, 2].map((i) => (
-            <span key={i} className="w-1.5 h-1.5 rounded-full bg-amber-800/30" />
-          ))}
-        </div>
       </div>
 
       {/* ── Ticker (fixed bottom) ── */}
       <div className="fixed bottom-0 left-0 right-0 z-20">
-        <ParchmentTicker text={tickerText} />
+        <Ticker
+          items={tickerItems}
+          separator="   ❧   "
+          speed={ds.tickerSpeed}
+          pauseOnHover={ds.tickerPauseOnHover}
+          className="py-2.5"
+          style={{
+            background: "linear-gradient(90deg, #8B6914, #b8922e, #8B6914)",
+            borderTop: "2px solid rgba(100,60,0,0.3)",
+          }}
+          textClassName="text-sm sm:text-base font-extrabold tracking-wide"
+          textStyle={{ fontFamily: "'Frank Ruhl Libre', serif", color: "#0f0800" }}
+        />
       </div>
     </div>
   );

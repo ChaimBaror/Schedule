@@ -1,6 +1,6 @@
 import type { Item } from '@/types/items';
 import type { Block } from '@/types/block';
-import type { Kehila, Announcement } from '@/types/kehila';
+import type { Kehila, Announcement, DisplaySettings } from '@/types/kehila';
 
 export interface ZmanimDisplay {
   shkiah: string;
@@ -25,4 +25,6 @@ export interface TemplateProps {
   onEdit?: (item: Item) => void;
   /** Dynamic blocks (new system) — when provided, templates render these instead of items */
   blocks?: Block[];
+  /** Display settings (scroll, ticker, paging) */
+  displaySettings?: DisplaySettings;
 }
