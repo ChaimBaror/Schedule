@@ -64,6 +64,28 @@ export function getKehilaBySlug(slug: string): Kehila | null {
   return DEMO_KEHILOT.find((k) => k.slug === slug) ?? null;
 }
 
+export function createKehila(kehila: Kehila): Kehila {
+  if (DEMO_KEHILOT.find((k) => k.slug === kehila.slug)) {
+    throw new Error(`קהילה עם הכתובת "${kehila.slug}" כבר קיימת`);
+  }
+  DEMO_KEHILOT.push(kehila);
+  return kehila;
+}
+
+// ─── User–Kehila assignment (in-memory demo) ────────────────────────────────
+
+const USER_KEHILA_MAP: Record<string, string[]> = {};
+
+export function assignKehilaToUser(email: string, slug: string): void {
+  const key = email.toLowerCase();
+  if (!USER_KEHILA_MAP[key]) USER_KEHILA_MAP[key] = [];
+  if (!USER_KEHILA_MAP[key].includes(slug)) USER_KEHILA_MAP[key].push(slug);
+}
+
+export function getUserKehilot(email: string): string[] {
+  return USER_KEHILA_MAP[email.toLowerCase()] ?? [];
+}
+
 export function getKehilaItems(slug: string) {
   return DEMO_ITEMS[slug] ?? getDefaultItems();
 }

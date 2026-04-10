@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { getAllKehilot } from "@/services/kehila.service";
 import type { Kehila } from "@/types/kehila";
 
@@ -38,10 +39,13 @@ const MAIN_NAV = [
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const pathname = usePathname();
+  const { data: session } = useSession();
   const trigger = useRef<HTMLButtonElement>(null);
   const sidebar = useRef<HTMLElement>(null);
   const [kehilot] = useState<Kehila[]>(() => getAllKehilot());
   const [kehilotOpen, setKehilotOpen] = useState(true);
+
+  const isLoggedIn = !!session?.user;
 
   // close on click outside
   useEffect(() => {
@@ -161,6 +165,24 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
               {kehilotOpen && (
                 <nav className="space-y-0.5">
+                  {isLoggedIn && (
+                    <Link
+                      href="/admin/new"
+                      onClick={() => setSidebarOpen(false)}
+                      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group ${
+                        isActive("/admin/new")
+                          ? "bg-white/10 text-white shadow-sm"
+                          : "text-white/30 hover:text-white hover:bg-white/5 border border-dashed border-white/10 hover:border-white/20"
+                      }`}
+                    >
+                      <span className="text-white/30 group-hover:text-amber-400 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                        </svg>
+                      </span>
+                      <span>קהילה חדשה</span>
+                    </Link>
+                  )}
                   {kehilot.map((k) => {
                     const kehilaPath = `/kehila/${k.slug}`;
                     const adminPath = `/admin/${k.slug}`;
