@@ -16,9 +16,6 @@ export default function AppHeaderUser() {
     function handleSignOut() {
         signOut();
     }
-    console.log("session", session)
-    
-
     return (
         <div className="text-blue-500 ml-auto flex gap-4">
             <RestrictedContent fallback={<Link className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-1 px-2 rounded ml-auto text-sm" href="/signin">Sign In</Link>}>

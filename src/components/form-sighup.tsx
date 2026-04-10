@@ -2,13 +2,10 @@
 
 import { ArrowRightIcon } from "@heroicons/react/20/solid";
 import { Button } from "./Button";
-import { useFormState, useFormStatus } from "react-dom";
-import Link from "next/link";
+import { useFormStatus } from "react-dom";
 
 export default function SignupForm() {
-  // const [errorMessage, dispatch] = useFormState(createUser, undefined);
   const createUser = (e: FormData) => {
-    console.log("createUser", e.forEach((value) => console.log(value)));
   };
 
   return (
