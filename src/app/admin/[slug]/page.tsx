@@ -28,6 +28,8 @@ import type { Block } from "@/types/block";
 import type { DayOverride } from "@/types/dayOverride";
 import type { ZmanimDisplay } from "@/templates/types";
 import { ScheduleTab } from "@/components/Admin/BlockEditor";
+import { isSuperAdmin } from "@/utils/super-admin";
+import { getUserKehilot } from "@/services/kehila.service";
 import { DisplaySettingsEditor } from "@/components/Admin/DisplaySettingsEditor";
 import { MonthlyCalendarEditor } from "@/components/Admin/MonthlyCalendarEditor";
 import { ImageAnnouncementUploader } from "@/components/Admin/ImageAnnouncementUploader";
@@ -143,10 +145,13 @@ export default function AdminPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  // Auth guard: only admin or gabay assigned to this kehila
+  // Auth guard: super admin, admin role, or gabay assigned to this kehila
   const userRole = session?.user?.role;
+  const userEmail = session?.user?.email;
   const userKehilot = session?.user?.kehilaSlugs || [];
-  const isAuthorized = userRole === "admin" || (userRole === "gabay" && userKehilot.includes(slug));
+  const localKehilot = userEmail ? getUserKehilot(userEmail) : [];
+  const hasAccess = userKehilot.includes(slug) || localKehilot.includes(slug);
+  const isAuthorized = userRole === "admin" || isSuperAdmin(userEmail) || hasAccess;
 
   useEffect(() => {
     if (status === "unauthenticated") {
