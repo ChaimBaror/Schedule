@@ -1,18 +1,15 @@
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import coverImg from "/public/assets/dashboard.jpg";
-import Image from "next/image";
-export default function Page() {
+import MonthlyCalendar from "@/components/HebrewCalendar/MonthlyCalendar";
 
-    return (
-        <DefaultLayout>
-            <div id="Fullscreen-Background" className="flex shrink-0 ">
-                <Image
-                    src={coverImg}
-                    alt="Cover Image"
-                    className="lg:h-full bg-cover bg-center"
-                    fill
-                />
-            </div>
-        </DefaultLayout>
-    );
+export const metadata = {
+  title: "לוח עברי חודשי | Schedule",
+  description: "לוח עברי עם זמני זריחה, שקיעה ודף יומי לכל יום",
+};
+
+export default function CalendarPage() {
+  return (
+    <DefaultLayout>
+      <MonthlyCalendar />
+    </DefaultLayout>
+  );
 }

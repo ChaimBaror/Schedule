@@ -1,3 +1,4 @@
+import type { Item } from "@/types/items";
 
 const Right: Item[] = [
     {

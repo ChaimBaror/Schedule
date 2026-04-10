@@ -6,14 +6,13 @@ import {
   ExclamationCircleIcon,
 } from "@heroicons/react/24/outline";
 import { ArrowRightIcon } from "@heroicons/react/20/solid";
-import { useFormState, useFormStatus } from "react-dom";
+import { useFormStatus } from "react-dom";
 import { Button } from "./Button";
 
 export default function LoginForm() {
   const errorMessage = "Invalid email or password";
 
   const authenticate = (e: FormData) => {
-    console.log("authenticate", e.forEach((value) => console.log(value)));
   };
 
   return (

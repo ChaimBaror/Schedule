@@ -1,9 +1,10 @@
 'use client'
+import React from 'react';
 import { useSession } from 'next-auth/react';
 
 interface RestrictedContentProps {
     children: React.ReactNode;
-    fallback?: JSX.Element;
+    fallback?: React.ReactElement;
 }
 
 export default function RestrictedContent({ children, fallback }: RestrictedContentProps) {
