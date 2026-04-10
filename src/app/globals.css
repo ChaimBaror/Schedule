@@ -21,3 +21,9 @@ body {
 .direction-rtl {
   direction: rtl;
 }
+
+/* Ticker scroll — moves 1/3 of total width so 3 copies loop seamlessly */
+@keyframes tickerScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-33.333%); }
+}

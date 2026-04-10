@@ -14,7 +14,6 @@ const config: Config = {
         "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       animation: {
-        // Ticker scrolls RTL: starts at 0, moves to negative (right-to-left)
         "ticker":          "ticker 60s linear infinite",
         "infinite-scroll": "ticker 60s linear infinite",
       },
@@ -22,6 +21,10 @@ const config: Config = {
         ticker: {
           "0%":   { transform: "translateX(0%)" },
           "100%": { transform: "translateX(-100%)" },
+        },
+        tickerScroll: {
+          "0%":   { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-33.333%)" },
         },
       },
     },
