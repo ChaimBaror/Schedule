@@ -213,7 +213,7 @@ export const ClassicTemplate: React.FC<TemplateProps> = ({
         <div className="absolute inset-0 bg-black/30" />
       </div>
 
-      <div className="relative z-10 flex flex-col h-screen pb-12">
+      <div className="relative z-10 flex flex-col h-screen pb-12" style={{ color: ds.textColor }}>
 
         {/* ── Header ── */}
         <header className="text-center pt-4 sm:pt-6 pb-3 px-4">
@@ -221,7 +221,7 @@ export const ClassicTemplate: React.FC<TemplateProps> = ({
             <img src={kehila.logoUrl} alt="לוגו" className="mx-auto h-14 mb-3 object-contain drop-shadow-lg" />
           )}
 
-          <h1 className="text-white font-bold text-2xl sm:text-3xl lg:text-5xl font-serif drop-shadow-lg tracking-wide">
+          <h1 className="font-bold text-2xl sm:text-3xl lg:text-5xl font-serif drop-shadow-lg tracking-wide">
             {kehila.name}
           </h1>
 

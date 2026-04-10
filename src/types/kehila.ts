@@ -68,6 +68,8 @@ export interface DisplaySettings {
   desktopPageInterval: number;
   /** Number of columns */
   columnCount: ColumnCount;
+  /** Text color (CSS color string) */
+  textColor: string;
 }
 
 export const DEFAULT_DISPLAY_SETTINGS: DisplaySettings = {
@@ -81,6 +83,7 @@ export const DEFAULT_DISPLAY_SETTINGS: DisplaySettings = {
   desktopLayout: "columns",
   desktopPageInterval: 10000,
   columnCount: 3,
+  textColor: "#ffffff",
 };
 
 export interface KehilaState {

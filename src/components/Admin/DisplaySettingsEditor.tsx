@@ -229,6 +229,47 @@ export function DisplaySettingsEditor({
         )}
       </div>
 
+      {/* ── Text color ── */}
+      <div className="bg-white rounded-2xl shadow p-4 space-y-3">
+        <h3 className="font-bold text-lg text-gray-700">צבע טקסט</h3>
+        <div className="flex items-center gap-3">
+          <input
+            type="color"
+            value={value.textColor || "#ffffff"}
+            onChange={(e) => update({ textColor: e.target.value })}
+            className="w-10 h-10 rounded-lg border border-gray-200 cursor-pointer"
+          />
+          <input
+            type="text"
+            value={value.textColor || "#ffffff"}
+            onChange={(e) => update({ textColor: e.target.value })}
+            className="flex-1 border border-gray-200 rounded-xl px-3 py-2 text-sm font-mono text-gray-700"
+            dir="ltr"
+          />
+        </div>
+        <div className="flex gap-1.5 flex-wrap">
+          {[
+            { color: "#ffffff", label: "לבן" },
+            { color: "#1a0e00", label: "חום כהה" },
+            { color: "#fde68a", label: "זהב בהיר" },
+            { color: "#fbbf24", label: "זהב" },
+            { color: "#000000", label: "שחור" },
+            { color: "#e2e8f0", label: "אפור בהיר" },
+          ].map((p) => (
+            <button
+              key={p.color}
+              type="button"
+              title={p.label}
+              onClick={() => update({ textColor: p.color })}
+              className={`w-8 h-8 rounded-lg border-2 transition-all ${
+                value.textColor === p.color ? "border-gray-800 scale-110" : "border-gray-200 hover:border-gray-400"
+              }`}
+              style={{ backgroundColor: p.color }}
+            />
+          ))}
+        </div>
+      </div>
+
       {/* ── Mobile paging ── */}
       <div className="bg-white rounded-2xl shadow p-4 space-y-3">
         <h3 className="font-bold text-lg text-gray-700">דפדוף אוטומטי (מובייל)</h3>

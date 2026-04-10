@@ -69,13 +69,14 @@ export function Ticker({
       <div
         ref={contentRef}
         className="flex whitespace-nowrap"
-        style={{
-          animation: contentWidth
-            ? `tickerScroll ${durationS}s linear infinite`
-            : undefined,
+        style={contentWidth ? {
+          animationName: "tickerScroll",
+          animationDuration: `${durationS}s`,
+          animationTimingFunction: "linear",
+          animationIterationCount: "infinite",
           animationPlayState: isPaused ? "paused" : "running",
           animationDirection: direction === "ltr" ? "reverse" : "normal",
-        }}
+        } : undefined}
       >
         {[0, 1, 2].map((i) => (
           <span

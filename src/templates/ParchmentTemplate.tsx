@@ -232,7 +232,7 @@ export const ParchmentTemplate: React.FC<TemplateProps> = ({
         />
       </div>
 
-      <div className="relative z-10 flex flex-col h-screen pb-12">
+      <div className="relative z-10 flex flex-col h-screen pb-12" style={{ color: ds.textColor }}>
         {/* ── Header ── */}
         <header className="text-center pt-5 sm:pt-8 pb-3 px-6 sm:px-16">
           {kehila.logoUrl && (
@@ -247,7 +247,6 @@ export const ParchmentTemplate: React.FC<TemplateProps> = ({
             className="font-extrabold text-3xl sm:text-5xl lg:text-6xl tracking-widest"
             style={{
               fontFamily: "'Frank Ruhl Libre', 'David Libre', serif",
-              color: "#1a0e00",
             }}
           >
             {kehila.name}
