@@ -1,12 +1,14 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { getKehilaState, getKehilaItems, getKehilaBlocks } from "@/services/kehila.service";
+import { getKehilaState, getKehilaItems, getKehilaBlocks, getTodayOverride } from "@/services/kehila.service";
 import { buildZmanimDisplay } from "@/utils/zmanim-display";
 import type { KehilaState } from "@/types/kehila";
 import type { ZmanimDisplay } from "@/templates/types";
 import type { Item } from "@/types/items";
-import type { Block } from "@/types/block";
+import type { Block, TimesContent, ImageContent } from "@/types/block";
+import type { DayOverride, DayAnnouncement } from "@/types/dayOverride";
+import type { Announcement, ImageAnnouncement } from "@/types/kehila";
 import { ClassicTemplate }     from "@/templates/ClassicTemplate";
 import { ModernTemplate }      from "@/templates/ModernTemplate";
 import { LedTemplate }         from "@/templates/LedTemplate";
@@ -18,11 +20,55 @@ import { RoyalBlueTemplate }   from "@/templates/RoyalBlueTemplate";
 import { MarbleTemplate }      from "@/templates/MarbleTemplate";
 import { WoodTemplate }        from "@/templates/WoodTemplate";
 
+/** Convert day announcements to the global Announcement format */
+function dayAnnouncementsToAnnouncements(dayAnns: DayAnnouncement[]): Announcement[] {
+  return dayAnns.map((a, i) => ({
+    id: `day-ann-${a.id}`,
+    type: a.type,
+    text: a.text,
+    priority: a.type === "avel" ? 0 : a.type === "simcha" ? 1 : 2,
+  }));
+}
+
+/** Convert image announcements to centered image blocks */
+function imageAnnouncementsToBlocks(images: ImageAnnouncement[]): Block[] {
+  return images.map((img, i) => ({
+    id: `img-ann-${img.id}`,
+    type: "image" as const,
+    col: "full" as const,
+    span: 3 as const,
+    index: i,
+    visibility: { rule: "always" as const },
+    content: {
+      url: img.imageData,
+      alt: img.label ?? "מודעה",
+      maxWidth: img.displayWidth,
+    } satisfies ImageContent,
+  }));
+}
+
+/** Convert a DayOverride into Block[] that templates can render */
+function dayOverrideToBlocks(override: DayOverride): Block[] {
+  return override.items.map((item, i) => ({
+    id: `day-override-${item.id}`,
+    type: "times" as const,
+    col: "right" as const,
+    index: i,
+    visibility: { rule: "always" as const },
+    content: {
+      title: item.title,
+      times: item.times.map((val) => ({ val })),
+      description: override.note,
+    } satisfies TimesContent,
+  }));
+}
+
 export default function KehilaKioskPage() {
   const { slug } = useParams<{ slug: string }>();
   const [state, setState]   = useState<KehilaState | null>(null);
   const [items, setItems]   = useState<{ right: Item[]; medium: Item[]; left: Item[] } | null>(null);
   const [blocks, setBlocks] = useState<Block[]>([]);
+  const [mergedAnnouncements, setMergedAnnouncements] = useState<Announcement[]>([]);
   const [zmanim, setZmanim] = useState<ZmanimDisplay | null>(null);
   const [error, setError]   = useState(false);
 
@@ -31,7 +77,33 @@ export default function KehilaKioskPage() {
     if (!s) { setError(true); return; }
     setState(s);
     setItems(getKehilaItems(slug));
-    setBlocks(getKehilaBlocks(slug));
+
+    // Load blocks and announcements, merge day-specific overrides if today has one
+    const baseBlocks = getKehilaBlocks(slug);
+    const todayOverride = getTodayOverride(slug);
+
+    // Collect extra blocks: day overrides + image announcements
+    const extraBlocks: Block[] = [];
+
+    if (todayOverride) {
+      if (todayOverride.items.length > 0) {
+        extraBlocks.push(...dayOverrideToBlocks(todayOverride));
+      }
+      const dayAnns = todayOverride.announcements?.length
+        ? dayAnnouncementsToAnnouncements(todayOverride.announcements)
+        : [];
+      setMergedAnnouncements([...dayAnns, ...s.announcements]);
+    } else {
+      setMergedAnnouncements(s.announcements);
+    }
+
+    // Image announcements → centered image blocks
+    if (s.imageAnnouncements.length > 0) {
+      extraBlocks.push(...imageAnnouncementsToBlocks(s.imageAnnouncements));
+    }
+
+    setBlocks([...extraBlocks, ...baseBlocks]);
+
     setZmanim(buildZmanimDisplay(s.kehila.location));
   }, [slug]);
 
@@ -56,7 +128,7 @@ export default function KehilaKioskPage() {
     </div>
   );
 
-  const p = { kehila: state.kehila, itemsRight: items.right, itemsMiddle: items.medium, itemsLeft: items.left, announcements: state.announcements, zmanim, isKiosk: true, blocks };
+  const p = { kehila: state.kehila, itemsRight: items.right, itemsMiddle: items.medium, itemsLeft: items.left, announcements: mergedAnnouncements, zmanim, isKiosk: true, blocks, displaySettings: state.displaySettings };
 
   switch (state.kehila.templateId) {
     case "modern":      return <ModernTemplate      {...p} />;

@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import {
   getKehilaState,
   getKehilaItems,
@@ -10,14 +11,26 @@ import {
   deleteAnnouncement,
   updateKehilaTemplate,
   updateKehilaLogo,
+  saveKehilaDisplaySettings,
+  getDayOverrides,
+  saveDayOverride,
+  deleteDayOverride,
+  getImageAnnouncements,
+  saveImageAnnouncement,
+  deleteImageAnnouncement,
 } from "@/services/kehila.service";
 import { buildZmanimDisplay } from "@/utils/zmanim-display";
 import { TEMPLATE_META } from "@/templates/index";
-import type { KehilaState, Announcement, AnnouncementType, TemplateId } from "@/types/kehila";
+import type { KehilaState, Announcement, AnnouncementType, ImageAnnouncement, TemplateId, DisplaySettings } from "@/types/kehila";
+import { DEFAULT_DISPLAY_SETTINGS } from "@/types/kehila";
 import type { Item } from "@/types/items";
 import type { Block } from "@/types/block";
+import type { DayOverride } from "@/types/dayOverride";
 import type { ZmanimDisplay } from "@/templates/types";
 import { ScheduleTab } from "@/components/Admin/BlockEditor";
+import { DisplaySettingsEditor } from "@/components/Admin/DisplaySettingsEditor";
+import { MonthlyCalendarEditor } from "@/components/Admin/MonthlyCalendarEditor";
+import { ImageAnnouncementUploader } from "@/components/Admin/ImageAnnouncementUploader";
 import { ClassicTemplate }     from "@/templates/ClassicTemplate";
 import { ModernTemplate }      from "@/templates/ModernTemplate";
 import { LedTemplate }         from "@/templates/LedTemplate";
@@ -127,11 +140,28 @@ function TemplateSelector({ current, onChange }: { current: TemplateId; onChange
 // ─── Main admin page ──────────────────────────────────────────────────────────
 export default function AdminPage() {
   const { slug } = useParams<{ slug: string }>();
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  // Auth guard: only admin or gabay assigned to this kehila
+  const userRole = session?.user?.role;
+  const userKehilot = session?.user?.kehilaSlugs || [];
+  const isAuthorized = userRole === "admin" || (userRole === "gabay" && userKehilot.includes(slug));
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/signin");
+    }
+  }, [status, router]);
+
   const [state, setState] = useState<KehilaState | null>(null);
   const [items, setItems] = useState<{ right: Item[]; medium: Item[]; left: Item[] } | null>(null);
   const [blocks, setBlocks] = useState<Block[]>([]);
+  const [dayOverrides, setDayOverrides] = useState<DayOverride[]>([]);
+  const [imageAnns, setImageAnns] = useState<ImageAnnouncement[]>([]);
+  const [displaySettings, setDisplaySettings] = useState<DisplaySettings>(DEFAULT_DISPLAY_SETTINGS);
   const [zmanim, setZmanim] = useState<ZmanimDisplay | null>(null);
-  const [tab, setTab] = useState<"schedule" | "preview" | "announcements" | "settings">("schedule");
+  const [tab, setTab] = useState<"schedule" | "calendar" | "preview" | "announcements" | "settings">("schedule");
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -140,8 +170,27 @@ export default function AdminPage() {
     setState(s);
     setItems(getKehilaItems(slug));
     setBlocks(getKehilaBlocks(slug));
+    setDayOverrides(getDayOverrides(slug));
+    setImageAnns(getImageAnnouncements(slug));
+    setDisplaySettings(s.displaySettings);
     setZmanim(buildZmanimDisplay(s.kehila.location));
   }, [slug]);
+
+  if (status === "loading") {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-800" />
+      </div>
+    );
+  }
+
+  if (status === "authenticated" && !isAuthorized) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100" dir="rtl">
+        <p className="text-xl text-gray-600">אין לך הרשאה לנהל את הקהילה: <strong>{slug}</strong></p>
+      </div>
+    );
+  }
 
   if (error) {
     return (
@@ -184,6 +233,48 @@ export default function AdminPage() {
     saveKehilaBlocks(slug, updated);
   };
 
+  const handleDayOverrideSave = (override: DayOverride) => {
+    saveDayOverride(slug, override);
+    setDayOverrides((prev) => {
+      const idx = prev.findIndex((o) => o.date === override.date);
+      if (idx >= 0) return prev.map((o, i) => (i === idx ? override : o));
+      return [...prev, override];
+    });
+  };
+
+  const handleDayOverrideDelete = (date: string) => {
+    deleteDayOverride(slug, date);
+    setDayOverrides((prev) => prev.filter((o) => o.date !== date));
+  };
+
+  const handleImageAnnSave = (img: ImageAnnouncement) => {
+    saveImageAnnouncement(slug, img);
+    setImageAnns((prev) => {
+      const idx = prev.findIndex((a) => a.id === img.id);
+      if (idx >= 0) return prev.map((a, i) => (i === idx ? img : a));
+      return [...prev, img];
+    });
+  };
+
+  const handleImageAnnDelete = (id: string) => {
+    deleteImageAnnouncement(slug, id);
+    setImageAnns((prev) => prev.filter((a) => a.id !== id));
+  };
+
+  const handleImageAnnResize = (id: string, width: number) => {
+    setImageAnns((prev) => {
+      const updated = prev.map((a) => (a.id === id ? { ...a, displayWidth: width } : a));
+      const img = updated.find((a) => a.id === id);
+      if (img) saveImageAnnouncement(slug, img);
+      return updated;
+    });
+  };
+
+  const handleDisplaySettingsChange = (updated: DisplaySettings) => {
+    setDisplaySettings(updated);
+    saveKehilaDisplaySettings(slug, updated);
+  };
+
   const templateProps = {
     kehila: state.kehila,
     itemsRight: items.right,
@@ -193,6 +284,7 @@ export default function AdminPage() {
     zmanim,
     isKiosk: true,
     blocks,
+    displaySettings,
   };
 
   const PreviewCmp =
@@ -230,7 +322,7 @@ export default function AdminPage() {
 
       {/* Tabs */}
       <div className="bg-white border-b border-gray-200 px-4 sm:px-8 flex gap-1">
-        {(["schedule", "announcements", "settings", "preview"] as const).map((t) => (
+        {(["schedule", "calendar", "announcements", "settings", "preview"] as const).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
@@ -238,21 +330,64 @@ export default function AdminPage() {
               tab === t ? "border-gray-800 text-gray-800" : "border-transparent text-gray-500 hover:text-gray-700"
             }`}
           >
-            {t === "schedule" ? "📋 לוח זמנים" : t === "announcements" ? "📢 מודעות" : t === "settings" ? "⚙️ הגדרות" : "👁️ תצוגה מקדימה"}
+            {t === "schedule" ? "📋 לוח זמנים" : t === "calendar" ? "📅 לוח חודשי" : t === "announcements" ? "📢 מודעות" : t === "settings" ? "⚙️ הגדרות" : "👁️ תצוגה מקדימה"}
           </button>
         ))}
       </div>
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-8 py-6 space-y-4">
-        {/* Schedule tab */}
+      <main className={`${tab === "schedule" ? "max-w-[1600px]" : "max-w-5xl"} mx-auto px-4 sm:px-8 py-6 space-y-4`}>
+        {/* Calendar tab – monthly calendar with day overrides */}
+        {tab === "calendar" && (
+          <>
+            <div className="bg-white rounded-2xl shadow p-4" dir="rtl">
+              <h3 className="font-bold text-lg text-gray-700 mb-1">עריכת זמנים לפי יום</h3>
+              <p className="text-sm text-gray-500 mb-4">
+                לחץ על יום בלוח כדי להגדיר זמני תפילה מותאמים. הזמנים יוצגו בלוח הציבורי ביום המתאים.
+              </p>
+            </div>
+            <MonthlyCalendarEditor
+              overrides={dayOverrides}
+              onSave={handleDayOverrideSave}
+              onDelete={handleDayOverrideDelete}
+            />
+          </>
+        )}
+
+        {/* Schedule tab – editor + live preview side by side */}
         {tab === "schedule" && (
-          <ScheduleTab blocks={blocks} onBlocksChange={handleBlocksChange} />
+          <div className="flex gap-6 items-start">
+            <div className="flex-1 min-w-0">
+              <ScheduleTab blocks={blocks} onBlocksChange={handleBlocksChange} />
+            </div>
+            <div className="hidden lg:block w-[480px] shrink-0 sticky top-4">
+              <h3 className="text-sm font-medium text-gray-500 mb-2 text-center">תצוגה מקדימה</h3>
+              <div className="rounded-2xl overflow-hidden shadow-xl border border-gray-200">
+                <div className="bg-gray-200 text-gray-600 text-xs px-3 py-1 flex items-center gap-2">
+                  <span className="flex gap-1">
+                    <span className="w-2.5 h-2.5 rounded-full bg-red-400" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-green-400" />
+                  </span>
+                  <span className="font-mono text-[10px]">/kehila/{slug}</span>
+                </div>
+                <div className="max-h-[75vh] overflow-y-auto" style={{ transform: "scale(0.45)", transformOrigin: "top center", width: "222%", marginBottom: "-55%" }}>
+                  <PreviewCmp {...templateProps} />
+                </div>
+              </div>
+            </div>
+          </div>
         )}
 
         {/* Announcements tab */}
         {tab === "announcements" && (
           <>
             <AnnouncementForm onSave={handleAddAnn} />
+            <ImageAnnouncementUploader
+              images={imageAnns}
+              onSave={handleImageAnnSave}
+              onDelete={handleImageAnnDelete}
+              onUpdateSize={handleImageAnnResize}
+            />
             <div className="bg-white rounded-2xl shadow p-4" dir="rtl">
               <h3 className="font-bold text-lg text-gray-700 mb-3">מודעות פעילות</h3>
               {state.announcements.length === 0 ? (
@@ -293,6 +428,7 @@ export default function AdminPage() {
         {tab === "settings" && (
           <>
             <TemplateSelector current={state.kehila.templateId} onChange={handleTemplateChange} />
+            <DisplaySettingsEditor value={displaySettings} onChange={handleDisplaySettingsChange} />
             <div className="bg-white rounded-2xl shadow p-4" dir="rtl">
               <h3 className="font-bold text-lg text-gray-700 mb-3">לוגו הקהילה</h3>
               <div className="flex items-center gap-4 flex-wrap">

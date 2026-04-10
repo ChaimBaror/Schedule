@@ -1,7 +1,9 @@
-import type { Kehila, Announcement, KehilaState } from "@/types/kehila";
+import type { Kehila, Announcement, ImageAnnouncement, KehilaState, DisplaySettings } from "@/types/kehila";
+import { DEFAULT_DISPLAY_SETTINGS } from "@/types/kehila";
 import { Right, Medium, Left } from "@/services/data";
 import type { Item } from "@/types/items";
 import type { Block, ColumnPosition } from "@/types/block";
+import type { DayOverride } from "@/types/dayOverride";
 import { CITIES } from "@/services/hebcal.service";
 
 // ─── Demo data ────────────────────────────────────────────────────────────────
@@ -70,12 +72,24 @@ export function getKehilaAnnouncements(slug: string): Announcement[] {
   return DEMO_ANNOUNCEMENTS[slug] ?? [];
 }
 
+const DEMO_DISPLAY_SETTINGS: Record<string, DisplaySettings> = {};
+
+export function getKehilaDisplaySettings(slug: string): DisplaySettings {
+  return DEMO_DISPLAY_SETTINGS[slug] ?? { ...DEFAULT_DISPLAY_SETTINGS };
+}
+
+export function saveKehilaDisplaySettings(slug: string, settings: DisplaySettings): void {
+  DEMO_DISPLAY_SETTINGS[slug] = settings;
+}
+
 export function getKehilaState(slug: string): KehilaState | null {
   const kehila = getKehilaBySlug(slug);
   if (!kehila) return null;
   return {
     kehila,
     announcements: getKehilaAnnouncements(slug),
+    imageAnnouncements: getImageAnnouncements(slug),
+    displaySettings: getKehilaDisplaySettings(slug),
   };
 }
 
@@ -150,4 +164,54 @@ export function saveBlock(slug: string, block: Block): void {
 export function deleteBlock(slug: string, blockId: string): void {
   if (!DEMO_BLOCKS[slug]) return;
   DEMO_BLOCKS[slug] = DEMO_BLOCKS[slug].filter((b) => b.id !== blockId);
+}
+
+// ─── Day Overrides ──────────────────────────────────────────────────────────
+
+const DEMO_DAY_OVERRIDES: Record<string, DayOverride[]> = {};
+
+export function getDayOverrides(slug: string): DayOverride[] {
+  return DEMO_DAY_OVERRIDES[slug] ?? [];
+}
+
+export function getDayOverride(slug: string, date: string): DayOverride | null {
+  const overrides = DEMO_DAY_OVERRIDES[slug] ?? [];
+  return overrides.find((o) => o.date === date) ?? null;
+}
+
+export function getTodayOverride(slug: string): DayOverride | null {
+  const today = new Date().toISOString().slice(0, 10);
+  return getDayOverride(slug, today);
+}
+
+export function saveDayOverride(slug: string, override: DayOverride): void {
+  if (!DEMO_DAY_OVERRIDES[slug]) DEMO_DAY_OVERRIDES[slug] = [];
+  const idx = DEMO_DAY_OVERRIDES[slug].findIndex((o) => o.date === override.date);
+  if (idx >= 0) DEMO_DAY_OVERRIDES[slug][idx] = override;
+  else DEMO_DAY_OVERRIDES[slug].push(override);
+}
+
+export function deleteDayOverride(slug: string, date: string): void {
+  if (!DEMO_DAY_OVERRIDES[slug]) return;
+  DEMO_DAY_OVERRIDES[slug] = DEMO_DAY_OVERRIDES[slug].filter((o) => o.date !== date);
+}
+
+// ─── Image Announcements ────────────────────────────────────────────────────
+
+const DEMO_IMAGE_ANNOUNCEMENTS: Record<string, ImageAnnouncement[]> = {};
+
+export function getImageAnnouncements(slug: string): ImageAnnouncement[] {
+  return DEMO_IMAGE_ANNOUNCEMENTS[slug] ?? [];
+}
+
+export function saveImageAnnouncement(slug: string, img: ImageAnnouncement): void {
+  if (!DEMO_IMAGE_ANNOUNCEMENTS[slug]) DEMO_IMAGE_ANNOUNCEMENTS[slug] = [];
+  const idx = DEMO_IMAGE_ANNOUNCEMENTS[slug].findIndex((a) => a.id === img.id);
+  if (idx >= 0) DEMO_IMAGE_ANNOUNCEMENTS[slug][idx] = img;
+  else DEMO_IMAGE_ANNOUNCEMENTS[slug].push(img);
+}
+
+export function deleteImageAnnouncement(slug: string, id: string): void {
+  if (!DEMO_IMAGE_ANNOUNCEMENTS[slug]) return;
+  DEMO_IMAGE_ANNOUNCEMENTS[slug] = DEMO_IMAGE_ANNOUNCEMENTS[slug].filter((a) => a.id !== id);
 }
